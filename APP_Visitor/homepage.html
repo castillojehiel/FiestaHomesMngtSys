@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<style>
+    .card{
+        max-height: 400px;
+    }
+</style>
+    <div class="col">
+        <div class="row">
+            <h3 class="mb-3">Hello <span id="mainGreetUsername">##UserName##</span>,</h3>
+        </div>
+        <hr/>
+
+        <h5>For Approval</h5>
+        <ul id="visitForApproval" class="list-group" style="max-height: 500px;">
+        </ul>
+        
+        <hr/>
+
+        <h5>Visit Logs</h5>
+        <form id="frmSearchVisitLogs">
+            <div class="row">
+                <div class="col-6">
+                    <input type="date" name="txtDateFrom" class="form-control" />
+                </div>
+                <div class="col-6">
+                    <input type="date" name="txtDateTo" class="form-control" />
+                </div>
+                <div class="col-12">
+                    <select class="form-control" name="cboVisitedHouseHolds" style="margin:3px 0 0 0 !important">
+
+                    </select>
+                </div>
+                <div class="col-6 offset-6" >
+                    <button type="submit" class="btn btn-primary" style="float:right; margin:3px 0 0 0 !important">
+                        <span class="fas fa-search" ></span>
+                        Search
+                    </button>
+                </div>
+            </div>
+        </form>
+        <ul id="visitLogsList" class="list-group" style="margin:10px 0 0 0">
+        </ul>
+
+    </div>
+</html>

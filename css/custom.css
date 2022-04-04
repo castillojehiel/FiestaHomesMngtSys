@@ -1,0 +1,117 @@
+body {
+  background-color: #e0e9f3;
+  margin: 0 !important;
+  height: auto;
+}
+
+.thead-dark th {
+  background: #152d46 !important;
+  color: white;
+}
+
+.row {
+  margin: 0 !important;
+}
+
+.inlineErrorMsg {
+  font-size: 10px;
+  color: red;
+  display: none;
+}
+table tbody button {
+  height: 27px !important;
+  padding: 0px 10px !important;
+}
+table tbody {
+  max-height: calc(100vh-200px);
+  background: rgba(255, 255, 255, 0.8);
+}
+table tbody,
+button,
+input,
+select,
+label,
+.input-group-text {
+  font-size: 12px !important;
+}
+table {
+  width: 100%;
+  margin: 10px 0 0 0 !important;
+}
+table thead {
+  font-size: 13px !important;
+  position: sticky;
+  top: 0;
+  width: 100%;
+  text-align: center !important;
+}
+
+button {
+  margin: 1px !important;
+}
+
+#sideNavBody {
+  width: 250px !important;
+  background-color: #121235; /* #070740;*/
+  height: 100%;
+  min-height: 100vh;
+  display: inline-block;
+  overflow: auto;
+  position: fixed;
+  left: 0;
+}
+
+.navigationV li a {
+  display: block;
+  color: rgb(219, 218, 218);
+  padding: 10px 20px;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.navigationV {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  background-color: #f1f1f1;
+}
+
+/* Change the link color on hover */
+.navigationV li a:hover {
+  background-color: #555;
+  color: white;
+}
+
+.closebtn {
+  margin-left: 15px;
+  color: white;
+  font-weight: bold;
+  float: right;
+  font-size: 22px;
+  line-height: 20px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.closebtn:hover {
+  color: black;
+}
+
+.mainContent {
+  height: 100vh;
+  width: calc(100% - 250px);
+  display: inline-block;
+  position: fixed;
+  right: 0;
+  padding: 10px;
+  overflow: auto;
+  background: url("../Resources/Images/bg1_faded.png");
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.page-title {
+  font-weight: 700;
+  font-size: 30px;
+}

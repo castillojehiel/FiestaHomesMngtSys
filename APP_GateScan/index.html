@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+    <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css" />
+    <link rel="stylesheet" type="text/css" href="fontawesome/css/all.min.css" />
+    <link rel="stylesheet" type="text/css" href="css/custom.css" />
+    
+    <script src="js/jquery_3.6.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/jquery.qrcode.min.js"></script>
+    <script src="js/printThis.js"></script>
+    <script src="js/reImg.js"></script>
+
+
+    <style>
+        .modal{
+            z-index: 100000000000 !important;
+            background: rgba(0,0,0,.5);
+        }
+        #main{
+            height: calc(100% - 40px);
+            position: fixed;
+            top: 0;
+            width: 100%;
+            overflow: auto;
+            padding: 5px 0;
+        }
+        #navMain .nav-item{
+            border-radius: 0px;
+        }
+        #loginForm{
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 100%;
+            width: 100%;
+            background: white;
+            z-index: 2001;
+        }
+        #mainCard{
+            height: auto;
+            top:2vh;
+            margin: 100px 0 0 0;
+            background : rgba(255,255,255,0.7);
+            display:block;
+            padding:20px;
+            text-align:center;
+        }
+    </style>
+
+    <div id="loginForm">
+        <div id="mainCard" >
+            <img src="Images/FiestaHomesLogo.png" style="width:50%; margin:0 auto; display:block"/>
+            <h2>Fiesta Homes Management System</h2>
+            <h6><i>Personnel App</i></h6>
+            <hr>
+            <form id="frmLogin" style="width:80%; margin:auto" >
+                <div class="mb-3">
+                    <label for="" style="float:left">Username:</label>
+                    <input type="text" class="form-control" name="txtUsername" required value="admin1" >
+                </div>
+                <div class="mb-3">
+                    <label for="" style="float:left">Password:</label>
+                    <input type="password" class="form-control" name="txtPassword" required value="admin1" >
+                </div>
+                <div class="mb-3">
+                    <button class="btn btn-primary" style="width: 200px;">
+                        <span class="fas fa-login"></span>
+                        Login
+                    </button>
+                </div>
+                
+            </form>
+            
+        </div>
+        <div class="row">
+            <button id="btnChangeConnection" type="button" class="btn btn-link">
+                Change Connection
+            </button>
+        </div>
+    </div>
+
+    <div id="main" class="row">
+
+    </div>
+
+    <nav id="navMain" class="nav nav-pills fixed-bottom nav-fill">
+        <a id="navItemHome" class="nav-item nav-link active navMainItem" href="#">
+            <span class="fas fa-home"></span>
+        </a>
+        <a id="navItemVisitorLogs" class="nav-item nav-link navMainItem" href="#">
+            <span class="fas fa-users"></span>
+        </a>
+        <!-- <a id="navItemQR" class="nav-item nav-link navMainItem" href="#">
+            <span class="fas fa-qrcode"></span>
+        </a> -->
+        <a id="navItemProfile" class="nav-item nav-link navMainItem" href="#">
+            <span class="fas fa-user"></span>
+        </a>
+      </nav>
+
+<!--change connection dialog -->
+<div class="modal fade" id="mdlChangeConnection" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+	<div class="modal-dialog modal-lg">
+		<div class="modal-content">
+			<div class="modal-header">
+			<h5 class="modal-title" id="exampleModalLabel">API Connection</h5>
+			<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+			</div>
+			<div class="modal-body">
+                <form id="frmChangeConnection">
+                    <div class="mb-3">
+                        <label>URL : </label>
+                        <input type="text" name="txtURL" class="form-control" required />
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="submit" form="frmChangeConnection" class="btn btn-primary">Save changes</button>
+            </div>
+		</div>
+	</div>
+</div>
+<div class="modal fade" id="mdlSearchHouseHoldForVisit" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+	<div class="modal-dialog modal-lg">
+		<div class="modal-content">
+			<div class="modal-header">
+			<h5 class="modal-title" id="exampleModalLabel">Search Household</h5>
+			<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+			</div>
+			<div class="modal-body" style="max-height: 400px !important;">
+                <form id="frmSearchHousehold">
+                    <div class="mb-3">
+                        <label>Household : </label>
+                        <input type="text" name="txtHouseHoldKeyword" class="form-control" required />
+                    </div>
+                    <div class="form-group mb-3">
+                        <button type="submit" class="btn btn-primary">
+                            <span class="fas fa-search"></span>
+                            Search
+                        </button>
+                    </div>
+                </form>
+                <hr>
+                <div class="row">
+                    <table id="tblHouseHoldList" class="table table-condensed table-striped table-bordered">
+                        <thead class="thead-dark">
+                            <th width="150px">Action</th>
+                            <th>HouseHold</th>
+                        </thead>
+                        <tbody>
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="submit" form="frmSearchHousehold" class="btn btn-primary">Save changes</button>
+            </div>
+		</div>
+	</div>
+</div>
+<div class="modal fade" id="mdlChangeCredentials" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+	<div class="modal-dialog modal-lg">
+		<div class="modal-content">
+			<div class="modal-header">
+			<h5 class="modal-title" id="exampleModalLabel">Search Household</h5>
+			<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+			</div>
+			<div class="modal-body" style="max-height: 400px !important;">
+                <form id="frmChangeUserCredentials">
+                    <div class="form-group m-3">
+                        <div class="row">
+                            <label>Username:</label>
+                            <input type="text" name="txtUserName" class="form-control" required  />
+                        </div>
+                        <div class="row">
+                            <label>Password:</label>
+                            <input type="password" name="txtUserPass" class="form-control" required />
+                        </div>
+                        <div class="row">
+                            <label>Confirm Password:</label>
+                            <input type="password" name="txtUserPassConfirm" class="form-control" required />
+                        </div>
+                    </div>
+                </form>
+                
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="submit" form="frmChangeUserCredentials" class="btn btn-primary">Save changes</button>
+            </div>
+		</div>
+	</div>
+</div>
+<!-- End change connection dialog -->
+
+<script defer="true">
+    $(document).ready( function(){
+        
+        let currentNavItemID = "";
+        let UserObj = {};
+        /////////////////
+
+        $("#main").on('click', "#btnRefreshRecentLogs", function(){
+            loadRecentVisitorLogs();
+        });
+
+        $("#main").on('click', "#btnLogout", function(){
+            let confirmres = confirm("Are you sure you want to logout account?");
+            if(confirmres){
+                $("#loginForm").slideDown();
+            }
+        });
+
+        $("#frmChangeUserCredentials").submit( function(event){
+            event.preventDefault();
+            let pass = $("#frmChangeUserCredentials").find("input[name=txtUserPass]").val();
+            let passConfirm = $("#frmChangeUserCredentials").find("input[name=txtUserPassConfirm]").val();
+            if(pass != passConfirm){
+                alert("Passwords do not match.");
+                return;
+            }
+
+            let url = localStorage.getItem('APIURL_GateScan') + "/API/ChangeUserCredentials.php";
+            let data = $(this).serializeArray();
+            let obj = JSON.parse(localStorage.getItem("UserObj"));
+            data.push({name : "UserID", value : obj.UserID});
+            $.post(url, data, function(res){
+                if(res.result){
+                    alert("Credentials successfully updated.");
+                    $(".modal").modal('hide');
+                    location.reload();
+                }
+                else{
+                    alert("Failed to update credentials. " + res.message)
+                }
+            }, 'json')
+            .fail( function(xhr, status, message){
+				alert("Error has occured. " + message);
+			});
+        });
+
+        $("#main").on('click', "#btnChangePassword", function(){
+            let obj = JSON.parse(localStorage.getItem("UserObj"));
+            $("#frmChangeUserCredentials").trigger("reset");
+            $("#frmChangeUserCredentials").find("input[name=txtUserName]").val(obj.Username);
+            $("#mdlChangeCredentials").modal("show");
+        });
+
+        $("#main").on('click', '#tblVisitorsLog .btnViewVisitorLog', function(){
+            let ID = $(this).parent().parent().prop("id");
+            loadViewVisitorLogDetailsPage();
+            let url = localStorage.getItem('APIURL_GateScan') + "/API/GetVisitorLogDetailsByID.php?VLID="+ID;
+            $.get(url, function(res){
+                console.log(res);
+                let $frm = $("#frmVisitDetailsForm");
+                $frm.find("input[name=txtDateOfVisit]").val(res.RequestDateTime);
+                $frm.find("input[name=txtVisitorName]").val(res.VisitorName);
+                $frm.find("input[name=txtHouseHold]").val(res.HouseHoldName);
+                $frm.find("textarea[name=txtReasonForVisit]").html(res.ReasonForVisit);
+                $frm.find("input[name=txtVisitStatus]").val(res.VisitStatus);
+                $frm.find("input[name=txtApprovedBy]").val(res.ApprovedByCompleteName);
+                $frm.find("input[name=txtApprovedDateTime]").val(res.ApprovedDateTime);
+            }, 'json')
+            .fail( function(xhr, status, message){
+                alert("Error has occured. " + message);
+            });
+        });
+
+        $("#main").on('submit', '#frmSearchVisitorLog', function(event){
+            event.preventDefault();
+            let url = localStorage.getItem('APIURL_GateScan') + "/API/GetUserVisitorLogs.php";
+            let data = $(this).serializeArray();
+            let obj = JSON.parse(localStorage.getItem("UserObj"));
+            data.push({name : "UserID", value : obj.UserID});
+            $.post(url, data, function(res){
+                let $tbl = $("#tblVisitorsLog tbody");
+                $tbl.html("");
+                $.each(res, function(index, value){
+                    $tbl.append(`
+                            <tr id="`+value.VLID+`">
+                                <td>
+                                    <button class="btn btn-primary btnViewVisitorLog"> 
+                                        <span class="fas fa-eye"></span>
+                                    </button>
+                                </td>
+                                <td>
+                                    <div class="row">
+                                        `+ value.VisitorName +`
+                                    </div>
+                                    <div class="row">
+                                        `+ value.HouseHoldName +` | Date requested : `+ value.RequestDateTime +`
+                                    </div>
+                                    <div class="row">
+                                        Status : `+ value.VisitStatus +`
+                                    </div>
+                                </td>
+                            </tr>
+                            `);
+                });
+            }, 'json')
+            .fail( function(xhr, status, message){
+				alert("Error has occured. " + message);
+			});
+        });
+
+        $("#main").on('submit', '#frmVisitorForm', function(event){
+            event.preventDefault();
+            let url = localStorage.getItem('APIURL_GateScan') + "/API/InsertVisitorGatePassApplication.php";
+            let data = $(this).serializeArray();
+            let obj = JSON.parse(localStorage.getItem("UserObj"));
+            data.push({name: "ScannedByUser", value : obj.UserID});
+            $.post(url, data, function(res){
+                if(res.result){
+                    if(res.isWhiteListed == false && res.isBlackListed == false)
+                    {
+                        alert("Visitor gate pass application has been saved. Please wait for confirmation of household.")
+                    }
+                    else if(res.isWhiteListed == true){
+                        alert("Visitor was whitelisted by household for visitation. Please allow gate access.")
+                    }
+                    else if(res.isBlackListed == true){
+                        alert("Visitor was blacklisted by household for visitation. Please do not allow gate access.")
+                    }   
+
+
+                    loadHomepage();
+                }
+                else{
+                    alert("Failed to save new visitor gate pass application.");
+                }
+            }, 'json')
+            .fail( function(xhr, status, message){
+				alert("Error has occured. " + message);
+			});
+        });
+
+        $("#tblHouseHoldList").on('click', '.btnSelectHouseHoldForVisit', function(){
+            let ID = $(this).parent().parent().prop("id");
+            let householdname = $(this).parent().next().find(".tdHouseHoldName").html();
+            $("#main").find("#frmVisitorForm").find('input[name=txtHouseHold]').val(householdname.trim());
+            $("#main").find("#frmVisitorForm").find('input[name=txtHouseHoldID]').val(ID);
+            $(".modal").modal("hide");
+        });
+
+        $("#frmSearchHousehold").submit( function(event){
+            event.preventDefault();
+            let url = localStorage.getItem('APIURL_GateScan') + "/API/SearchHousehold.php";
+            let data = $(this).serialize();
+            $.post(url, data, function(res){
+                let $tbl = $("#tblHouseHoldList tbody");
+                $tbl.html("");
+                $.each(res, function(index, value){
+                    $tbl.append(`
+						<tr id="`+ value.HouseHoldID +`">
+							<td>
+								<button class="btn btn-primary btnSelectHouseHoldForVisit">
+									<span class="fas fa-check" ></span>
+									Select
+								</button>
+							</td>
+							<td>
+                                <div class="row tdHouseHoldName">
+                                    `+ value.HouseHoldName +`
+                                </div>
+                                <div class="row">
+                                    `+ value.HouseNo +` | `+ value.Street +`
+                                </div>
+                            </td>
+						</tr>
+					`);
+                });
+            }, 'json')
+            .fail( function(xhr, status, message){
+				alert("Error has occured. " + message);
+			});
+        });
+
+        $("#main").on('click', '#btnSearchHouseHoldForVisit', function(){
+            $("#mdlSearchHouseHoldForVisit").modal('show');
+        });
+
+        $("#main").on('click', '#btnScanQRCode', function(){
+            loadQRCodePage();
+        });
+
+        $(".navMainItem").click( function(){
+            let id = $(this).prop("id");
+            if(id != currentNavItemID && id == "navItemHome"){
+                currentNavItemID = id;
+                loadHomepage();
+            }
+            else if(id != currentNavItemID && id == "navItemQR"){
+                currentNavItemID = id;
+                loadQRCodePage();
+            }
+            else if(id != currentNavItemID && id == "navItemVisitorLogs"){
+                currentNavItemID = id;
+                loadVisitorsLogPage();
+            }
+            else if(id != currentNavItemID && id == "navItemProfile"){
+                currentNavItemID = id;
+                loadUserPage();
+            }
+            $(".navMainItem").removeClass('active');
+            $(this).addClass('active');
+        });
+
+        $("#frmLogin").submit( function(event){
+            event.preventDefault();
+            let url = localStorage.getItem('APIURL_GateScan') + "/API/Userlogin.php";
+            let data = $(this).serialize();
+            $.post(url, data, function(res){
+                if(res != undefined){
+                    UserObj = res;
+                    localStorage.setItem("UserObj", JSON.stringify(res));
+                    $("#loginForm").slideUp();
+                    loadHomepage();
+                }
+                else{
+                    alert("User not found or mismatched credentials.");
+                }
+            }, 'json')
+            .fail( function(xhr, status, message){
+				alert("Error has occured. " + message);
+			});
+        });
+
+        $("#frmChangeConnection").submit( function(event){
+            event.preventDefault();
+            localStorage.setItem("APIURL_GateScan", $("#frmChangeConnection input[name=txtURL]").val());
+            $(".modal").modal('hide');
+        });
+        $("#btnChangeConnection").click( function(){
+            $("#frmChangeConnection input[name=txtURL]").val(localStorage.getItem("APIURL_GateScan"))
+            $("#mdlChangeConnection").modal('show');
+        });
+
+        
+        ///////////////////////
+
+        function loadRecentVisitorLogs(){
+            let url = localStorage.getItem('APIURL_GateScan') + "/API/GetRecentVisitorLogs.php";
+            let obj = JSON.parse(localStorage.getItem("UserObj"));
+            let data = {UserID : obj.UserID };
+            $.get(url, data, function(res){
+                let $list = $("#lstRecentLogs");
+                $list.html("");
+                if(res.length > 0){
+                    $.each(res, function(index, value){
+                        $list.append(` 
+                                <li class="list-group-item">
+                                    <div class="row">
+                                        <label class="form-label" style="margin: 0 auto !important;">Name: <strong>`+ value.VisitorName +`</strong></label>
+                                    </div>
+                                    <div class="row">
+                                        <label class="form-label" style="margin: 0 auto !important;">HouseHold: <strong>`+ value.HouseHoldName +`</strong></label>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-6">
+                                            <label class="form-label" style="margin: 0 auto !important;">Req. Date/Time: <strong>`+ value.RequestDateTime +`</strong></label>
+                                        </div>
+                                        <div class="col-6">
+                                            <label class="form-label" style="margin: 0 auto !important;">Status: <strong>`+ value.VisitStatus +`</strong></label>
+                                        </div>
+                                    </div>
+                                </li>`);
+                    });
+                }
+                else{
+                    $list.html("No recent logs found...");
+                }
+            }, 'json');
+        }
+        
+        function loadHomepage(){
+            $.get("homepage.html", function(data){
+                $("#main").html(data);
+                $("#mainGreetUsername").html(UserObj.UserCompleteName);
+            });
+        }
+
+        function loadQRCodePage(){
+            $.get("QRCode.html", function(data){
+                $("#main").html(data);
+            });
+        }
+
+        function loadVisitorsLogPage(){
+            $.get("visitorspage.html", function(data){
+                $("#main").html(data);
+                var date = new Date();
+                var currentDate = date.toISOString().substring(0,10);
+                $("#frmSearchVisitorLog input[name=txtDateFrom]").val(currentDate);
+                $("#frmSearchVisitorLog input[name=txtDateTo]").val(currentDate);
+                loadRecentVisitorLogs();
+            });
+        }
+        
+        function loadViewVisitorLogDetailsPage(){
+            $.get("VisitorDetailsPage.html", function(data){
+                $("#main").html(data);
+            })
+        }
+
+        function loadUserPage(){
+            $.get("userpage.html", function(data){
+                $("#main").html(data);
+                let obj = JSON.parse(localStorage.getItem("UserObj"));
+                console.log(obj);
+                let $frm = $("#frmUserDetailsPage");
+                $frm.find("input[name=txtUserCompleteName]").val(obj.UserCompleteName);
+                $frm.find("input[name=txtGender]").val(obj.Gender);
+                $frm.find("input[name=txtBirthdate]").val(obj.BirthDate);
+                $frm.find("input[name=txtContactNo]").val(obj.ContactNo);
+                $frm.find("input[name=txtEmailAddress]").val(obj.EmailAddress);
+                $frm.find("input[name=txtUsername]").val(obj.Username);
+                $frm.find("input[name=txtPassword]").val(obj.Userpass);
+            })
+        }
+        ///////////////////////////////////////
+
+    });
+</script>
+
+</html>

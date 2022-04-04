@@ -1,0 +1,27 @@
+<script>
+
+const FormatCurrency = (x) => {
+    let str = x != null ? x : '0'
+  return str.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+}
+
+(function ($) {
+    $.fn.serializeFormJSON = function () {
+
+        var o = {};
+        var a = this.serializeArray();
+        $.each(a, function () {
+            if (o[this.name]) {
+                if (!o[this.name].push) {
+                    o[this.name] = [o[this.name]];
+                }
+                o[this.name].push(this.value || '');
+            } else {
+                o[this.name] = this.value || '';
+            }
+        });
+        return o;
+    };
+})(jQuery);
+
+</script>

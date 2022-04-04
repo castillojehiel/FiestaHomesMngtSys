@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+    <style>
+    </style>
+    <div class="col">
+        <h4>
+            User Details
+            <div style="float: right;">
+                <button id="btnChangePassword" class="btn btn-warning">
+                    <span class="fas fa-lock"></span>
+                </button>
+                <button id="btnLogout" class="btn btn-danger">
+                    Logout
+                </button>
+            </div>
+        </h4>
+        <hr>
+        <div class="row">
+            <form id="frmUserDetailsPage">
+                <div class="form-group m-3">
+                    <div class="row">
+                        <img id="residentPhoto" class="img_thumbnail" style="width: 200px; height: 200px; display: block; margin: 0 auto;" />
+                        </br>
+                        <input type="file" id="changePhoto" name="txtFile" class="form-control"  />
+                        <input type="hidden" name="txtPhoto" class="form-control"  />
+                        <input type="hidden" name="txtPhotoExt" class="form-control"  />
+                        <button id="btnUpdatePhoto" type="button" class="btn btn-primary">
+                            Update Photo
+                        </button>
+                    </div>
+                </div>
+                <div class="form-group m-3">
+                    <div class="row">
+                        <label> Name:</label>
+                        <input type="text" name="txtUserCompleteName" class="form-control" readonly />
+                    </div>
+                </div>
+                <div class="form-group m-3">
+                    <div class="row">
+                        <label>Gender:</label>
+                        <input type="text" name="txtGender" class="form-control" readonly />
+                    </div>
+                </div>
+                <div class="form-group m-3">
+                    <div class="row">
+                        <label>Birthdate:</label>
+                        <input type="text" name="txtBirthdate" class="form-control" readonly />
+                    </div>
+                </div>
+                <div class="form-group m-3">
+                    <div class="row">
+                        <label>Contact No:</label>
+                        <input type="text" name="txtContactNo" class="form-control" readonly />
+                    </div>
+                </div>
+                <div class="form-group m-3">
+                    <div class="row">
+                        <label>Email:</label>
+                        <input type="text" name="txtEmailAddress" class="form-control" readonly />
+                    </div>
+                </div>
+                <!-- <div class="form-group m-3">
+                    <div class="row">
+                        <label>Username:</label>
+                        <input type="text" name="txtUsername" class="form-control" readonly />
+                    </div>
+                </div> -->
+                <div class="form-group m-3">
+                    <div class="row">
+                        <label>Password:</label>
+                        <input type="password" name="txtPassword" class="form-control" readonly />
+                    </div>
+                </div>                
+            </form>
+        </div>
+        <hr>
+        <div class="row">
+            <h5 class="col-11 m-0">Gate Logs</h5>
+        </div>
+        <br>
+        <div class="row">
+            <button id="btnViewVisitorsLogs" class="btn btn-secondary">
+                <span class="fas fa-list"></span>
+                View Visitor Logs
+            </button>
+        </div>
+        <div class="row">
+            <button id="btnViewMembersLogs" class="btn btn-secondary">
+                <span class="fas fa-list"></span>
+                View Member Logs
+            </button>
+        </div>
+        <div class="row">
+            <button id="btnViewPersonalLogs" class="btn btn-secondary">
+                <span class="fas fa-list"></span>
+                View Personal Logs
+            </button>
+        </div>
+        <hr>
+        <div class="row">
+            <div class="row">
+                <h5 class="col-11 m-0">Household Members</h5>
+                <button id="btnAddHouseHoldMember" class="col-1 m-0 btn btn-success">
+                    <span class="fas fa-plus"></span>
+                </button>
+            </div>
+            <ul id="HouseHoldList" class="list-group" style="margin: 10px 0 0 0;">
+                <!-- <li class="list-group-item">Cras justo odio</li>
+                <li class="list-group-item">Dapibus ac facilisis in</li>
+                <li class="list-group-item">Morbi leo risus</li>
+                <li class="list-group-item">Porta ac consectetur ac</li>
+                <li class="list-group-item">Vestibulum at eros</li> -->
+              </ul>
+        </div>
+
+        <hr>
+        <div class="row">
+            <div class="row">
+                <h5 class="col-11 m-0">Vehicles</h5>
+                <button id="btnAddHouseHoldVehicle" class="col-1 m-0 btn btn-success">
+                    <span class="fas fa-plus"></span>
+                </button>
+            </div>
+            <ul id="VehiclesList" class="list-group" style="margin: 10px 0 0 0;">
+                <!-- <li class="list-group-item">Cras justo odio</li>
+                <li class="list-group-item">Dapibus ac facilisis in</li>
+                <li class="list-group-item">Morbi leo risus</li>
+                <li class="list-group-item">Porta ac consectetur ac</li>
+                <li class="list-group-item">Vestibulum at eros</li> -->
+              </ul>
+        </div>
+    </div>
+    
+</html>

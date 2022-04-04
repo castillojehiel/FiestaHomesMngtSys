@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+    <style>
+    </style>
+    <div class="col">
+        <div class="row">
+            <button id="btnNewReport" class="btn btn-success">
+                <span class="fas fa-plus"></span>
+                Create New Report
+            </button>
+        </div>
+        <hr/>
+        <div class="row">
+            <h6>My Reports</h6>
+        </div>
+        <div class="row">
+            <form id="frmSearchReports" >
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col-6" style="margin: 0 ;">
+                            <input type="date" name="txtDateStart" class="form-control" />
+                        </div>
+                        <div class="col-6" style="margin: 0;">
+                            <input type="date" name="txtDateEnd" class="form-control" />
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group" style="margin: 5px 0 0 0;">
+                    <div class="row">
+                        <select name="cboTypes" class="form-select">
+                            <option value="0">All</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group" style="margin: 5px 0 0 0;">
+                    <div class="col-12">
+                        <input type="text" name="txtSearch" class="form-control" placeholder="Report Details" />
+                    </div>
+                </div>
+                <div class="form-group" style="margin: 5px 0 0 0;">
+                    <div class="col-12">
+                        <button type="submit" class="btn btn-primary" style="float: right;">
+                            <span class="fas fa-search"></span>
+                            Search
+                        </button>
+                    </div>
+                </div>
+            </form>   
+        </div>
+        <hr/>
+        <div class="row">
+            <p>Result Count : <span id="lblReportsCount">0</span></p>
+        </div>
+        <div id="reportsList" class="row">
+            <!-- <div class="card mb-3 reportItem" >
+                <div class="card-body">
+                  <h6 class="card-title">Report No : REP0001</h6>
+                  <hr style="margin: 5px;">
+                  <p class="card-text">
+                      <label>Date Reported : <span>2021-01-01</span></label>
+                      <br/>
+                      <label>Status : <span>Resolved</span></label>
+                  </p>
+                  <hr style="margin: 5px;">
+                  <div class="row">
+                    <div class="col-6">
+                        <button class="btn btn-primary btnViewReport w-100">
+                            <span class="fas fa-eye"></span>
+                            View
+                        </button>
+                    </div>
+                    <div class="col-6">
+                        <button class="btn btn-warning btnEditReport w-100">
+                            <span class="fas fa-edit"></span>
+                            Edit
+                        </button>
+                    </div>
+                  </div>
+                </div>
+            </div> -->
+        </div>
+    </div>
+    
+</html>

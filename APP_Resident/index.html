@@ -1,0 +1,1512 @@
+<!DOCTYPE html>
+    <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css" />
+    <link rel="stylesheet" type="text/css" href="fontawesome/css/all.min.css" />
+    <link rel="stylesheet" type="text/css" href="css/custom.css" />
+    
+    <script src="js/jquery_3.6.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/jquery.qrcode.min.js"></script>
+    <script src="js/printThis.js"></script>
+    <script src="js/reImg.js"></script>
+
+
+    <style>
+        .modal{
+            z-index: 100000000000 !important;
+            background: rgba(0,0,0,.5);
+        }
+        #main{
+            height: calc(100% - 40px);
+            position: fixed;
+            top: 0;
+            width: 100%;
+            overflow: auto;
+            padding: 5px 0;
+        }
+        #navMain .nav-item{
+            border-radius: 0px;
+        }
+        #loginForm{
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 100%;
+            width: 100%;
+            background: white;
+            z-index: 2001;
+            overflow: auto;
+        }
+        #mainCard{
+            height: auto;
+            top:2vh;
+            margin: 100px 0 0 0;
+            background : rgba(255,255,255,0.7);
+            display:block;
+            padding:20px;
+            text-align:center;
+        }
+
+        .btnVisitorShowOptions{
+            padding: 0 !important;
+            width: 15px !important;
+            height: 30px !important;
+            float: right !important;
+            text-align: center !important
+        }
+    </style>
+
+    <div id="loginForm">
+        <div id="mainCard" >
+            <img src="Images/FiestaHomesLogo.png" style="width:50%; margin:0 auto; display:block"/>
+            <h2>Fiesta Homes Management System</h2>
+            <h6><i>Resident App</i></h6>
+            <hr>
+            <form id="frmLogin" style="width:80%; margin:auto" >
+                <div class="mb-3">
+                    <label for="" style="float:left">Username:</label>
+                    <input type="text" class="form-control" name="txtUsername" required value="RES00000008" >
+                </div>
+                <div class="mb-3">
+                    <label for="" style="float:left">Password:</label>
+                    <input type="password" class="form-control" name="txtPassword" required value="admin" >
+                </div>
+                <div class="mb-3">
+                    <button class="btn btn-primary" style="width: 200px;">
+                        <span class="fas fa-login"></span>
+                        Login
+                    </button>
+                </div>
+                
+            </form>
+            
+        </div>
+        <div class="row">
+            <button id="btnChangeConnection" type="button" class="btn btn-link">
+                Change Connection
+            </button>
+        </div>
+    </div>
+
+    <div id="main" class="row" style="padding: 10px 0 0 0 ;">
+
+    </div>
+    <nav id="navMain" class="nav nav-pills fixed-bottom nav-fill">
+        <a id="navItemHome" class="nav-item nav-link active navMainItem" href="#">
+            <span class="fas fa-home"></span>
+        </a>
+        <a id="navItemReports" class="nav-item nav-link navMainItem" href="#">
+            <span class="fas fa-flag"></span>
+        </a>
+        <a id="navItemProfile" class="nav-item nav-link navMainItem" href="#">
+            <span class="fas fa-user"></span>
+        </a>
+        <a id="navItemQR" class="nav-item nav-link navMainItem" href="#">
+            <span class="fas fa-qrcode"></span>
+        </a>
+      </nav>
+
+<!--change connection dialog -->
+<div class="modal fade" id="mdlChangeConnection" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+	<div class="modal-dialog modal-lg">
+		<div class="modal-content">
+			<div class="modal-header">
+			<h5 class="modal-title" id="exampleModalLabel">API Connection</h5>
+			<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+			</div>
+			<div class="modal-body">
+                <form id="frmChangeConnection">
+                    <div class="mb-3">
+                        <label>URL : </label>
+                        <input type="text" name="txtURL" class="form-control" required />
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="submit" form="frmChangeConnection" class="btn btn-primary">Save changes</button>
+            </div>
+		</div>
+	</div>
+</div>
+<!-- End change connection dialog -->
+
+<!-- report dialog -->
+<div class="modal fade" id="mdlViewReport" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+	<div class="modal-dialog modal-sm">
+		<div class="modal-content">
+			<div class="modal-header">
+			<h5 class="modal-title" id="exampleModalLabel">View Report</h5>
+			<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+			</div>
+			<div class="modal-body">
+				<form id="frmViewReport">
+					<div class="form-group m-3">
+						<div class="row">
+							<div class="col-4">
+								<label>Report Type:</label>
+							</div>
+							<div class="col-8">
+								<input type="text" name="txtReportType" class="form-control" readonly />
+							</div>
+						</div>
+					</div>
+                    <div class="form-group m-3">
+						<div class="row">
+                            <div class="col-4">
+								<label>Status:</label>
+							</div>
+							<div class="col-8">
+								<input type="text" name="txtReportStatus" class="form-control" readonly />
+							</div>
+						</div>
+					</div>
+                    <div class="form-group m-3">
+						<div class="row">
+							<div class="col-4">
+								<label>Reported By:</label>
+							</div>
+							<div class="col-8">
+								<input type="text" name="txtReportedBy" class="form-control" readonly />
+							</div>
+					</div>
+                    <div class="form-group m-3">
+						<div class="row">
+                            <div class="col-4">
+								<label>Report Date/Time:</label>
+							</div>
+							<div class="col-8">
+								<input type="text" name="txtReportedDateTime" class="form-control" readonly />
+							</div>
+						</div>
+					</div>
+                    <hr>
+                    <div class="form-group m-3">
+						<div class="row">
+                            <label>Report Details: </label>
+                            <textarea name="txtReportDetails" readonly class="form-control" style="min-height:200px; font-size:13px; margin:10px 0 0 0 "></textarea>
+						</div>
+					</div>
+                    <hr>
+                    <div class="form-group m-3">
+						<div class="row">
+							<div class="col-4">
+								<label>Acknowledged By:</label>
+							</div>
+							<div class="col-8">
+								<input type="text" name="txtAcknowledgedBy" class="form-control" readonly />
+							</div>
+						</div>
+					</div>
+                    <div class="form-group m-3">
+						<div class="row">
+                            <div class="col-4">
+								<label>Acknowledgement Date/Time:</label>
+							</div>
+							<div class="col-8">
+								<input type="text" name="txtAcknowledgedDateTime" class="form-control" readonly />
+							</div>
+						</div>
+					</div>
+                    <div class="form-group m-3">
+						<div class="row">
+                            <label>Acknowledgement Remarks: </label>
+                            <textarea name="txtAcknowledgedmentRemarks" readonly class="form-control" style="min-height:200px; font-size:13px; margin:10px 0 0 0 "></textarea>
+						</div>
+					</div>
+                    <hr>
+                    <div class="form-group m-3">
+						<div class="row">
+							<div class="col-4">
+								<label>Tagged Resolved By:</label>
+							</div>
+							<div class="col-8">
+								<input type="text" name="txtTaggedResolvedBy" class="form-control" readonly />
+							</div>
+						</div>
+					</div>
+                    <div class="form-group m-3">
+						<div class="row">
+                            <div class="col-4">
+								<label>Tagged Resolved Date/Time:</label>
+							</div>
+							<div class="col-8">
+								<input type="text" name="txtTaggedResolvedDateTime" class="form-control" readonly />
+							</div>
+						</div>
+					</div>
+                    <div class="form-group m-3">
+						<div class="row">
+                            <label>Tagged Resolved Remarks: </label>
+                            <textarea name="txtTaggedResolvedRemarks" readonly class="form-control" style="min-height:200px; font-size:13px; margin:10px 0 0 0 "></textarea>
+						</div>
+					</div>
+				</form>
+			</div>
+			<div class="modal-footer">
+			<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+			</div>
+		</div>
+	</div>
+</div>
+</div>
+<div class="modal fade" id="mdlNewReport" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+	<div class="modal-dialog modal-sm">
+		<div class="modal-content">
+			<div class="modal-header">
+			<h5 class="modal-title" id="exampleModalLabel">New Report</h5>
+			<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+			</div>
+			<div class="modal-body">
+				<form id="frmNewReport">
+					<div class="form-group m-3">
+						<div class="row">
+							<div class="col-2">
+								<label>Report Type:</label>
+							</div>
+							<div class="col-10">
+								<select name="cboTypes" class="form-select">
+                                </select>
+							</div>
+                            
+						</div>
+					</div>
+                    <div class="form-group m-3">
+						<div class="row">
+                            <label>Report Details: </label>
+                            <textarea name="txtReportDetails" class="form-control" style="min-height:200px; font-size:13px; margin:10px 0 0 0 "></textarea>
+						</div>
+					</div>
+				</form>
+			</div>
+			<div class="modal-footer">
+			    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="submit" form="frmNewReport" class="btn btn-primary">Save changes</button>
+			</div>
+		</div>
+	</div>
+</div>
+</div>
+
+<div class="modal fade" id="mdlEditReport" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+	<div class="modal-dialog modal-sm">
+		<div class="modal-content">
+			<div class="modal-header">
+			<h5 class="modal-title" id="exampleModalLabel">Edit Report</h5>
+			<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+			</div>
+			<div class="modal-body">
+				<form id="frmEditReport">
+					<div class="form-group m-3">
+						<div class="row">
+							<div class="col-2">
+								<label>Report Type:</label>
+							</div>
+							<div class="col-10">
+                                <input type="hidden" name="txtID" />
+								<select name="cboTypes" class="form-select">
+                                </select>
+							</div>
+                            
+						</div>
+					</div>
+                    <div class="form-group m-3">
+						<div class="row">
+                            <label>Report Details: </label>
+                            <textarea name="txtReportDetails" class="form-control" style="min-height:200px; font-size:13px; margin:10px 0 0 0 "></textarea>
+						</div>
+					</div>
+                    <div class="form-group m-3">
+						<input type="checkbox" name="chkIsActive" />
+                        <label>is Active</label>
+					</div>
+				</form>
+			</div>
+			<div class="modal-footer">
+			    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="submit" form="frmEditReport" class="btn btn-primary">Save changes</button>
+			</div>
+		</div>
+	</div>
+</div>
+</div>
+
+<div class="modal fade" id="mdlChangeCredentials" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+	<div class="modal-dialog modal-lg">
+		<div class="modal-content">
+			<div class="modal-header">
+			<h5 class="modal-title" id="exampleModalLabel">Change Credentials</h5>
+			<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+			</div>
+			<div class="modal-body" style="max-height: 400px !important;">
+                <form id="frmChangeUserCredentials">
+                    <div class="form-group m-3">
+                        <div class="row">
+                            <label>Password:</label>
+                            <input type="password" name="txtUserPass" class="form-control" required />
+                        </div>
+                        <div class="row">
+                            <label>Confirm Password:</label>
+                            <input type="password" name="txtUserPassConfirm" class="form-control" required />
+                        </div>
+                    </div>
+                </form>
+                
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="submit" form="frmChangeUserCredentials" class="btn btn-primary">Save changes</button>
+            </div>
+		</div>
+	</div>
+</div>
+<div class="modal fade" id="mdlEditVehicleDetails" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+	<div class="modal-dialog modal-lg">
+		<div class="modal-content">
+			<div class="modal-header">
+			<h5 class="modal-title" id="exampleModalLabel">Update Vehicle Details</h5>
+			<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+			</div>
+			<div class="modal-body" style="max-height: 400px !important;">
+                <form id="frmEditVehicleDetails">
+                    <div class="form-group mb-3">
+                        <label>Model :</label>
+                        <input type="text" name="txtModel" class="form-control" required />
+                        <input type="hidden" name="txtVehicleID" />
+                        <input type="hidden" name="txtUpdatedBy" />
+                    </div>
+                    <div class="form-group mb-3">
+                        <label>Color :</label>
+                        <input type="text" name="txtColor" class="form-control" required />
+                    </div>
+                    <div class="form-group mb-3">
+                        <label>Plate Number :</label>
+                        <input type="text" name="txtPlateNumber" class="form-control" required />
+                    </div>
+                </form>
+                
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="submit" form="frmEditVehicleDetails" class="btn btn-primary">Save changes</button>
+            </div>
+		</div>
+	</div>
+</div>
+<!-- end of report dialogs -->
+
+
+<script defer="true">
+    $(document).ready( function(){
+        let currentNavItemID = "";
+        let UserObj = {};
+        /////////////////
+
+        $("#main").on('click', ".btnRemoveVehicle", function(){
+            let ID = $(this).parent().attr("id");
+            let ans = confirm("Are you sure you want to remove this record?");
+            if(ans){
+                let obj = JSON.parse(localStorage.getItem("UserObj_Resident"));
+                let data = {VehicleID : ID, UpdatedBy : obj.DataCenterID};
+                let url = localStorage.getItem('APIURL_Resident') + "/API/RemoveHouseHoldVehicle.php"; 
+                $.post(url, data, function(res){
+                if(res){
+                    alert("Successfully saved!");
+                    loadUserPage();
+                    $(".modal").modal("hide");
+                }
+                else{
+                    alert("Failed to save updates. Please try again.")
+                }
+            }, 'json')
+            .fail( function(xhr, status, message){
+                alert("Error has occured. " + message);
+            });
+            }
+        });
+
+        $("#frmEditVehicleDetails").submit( function(event){
+            event.preventDefault();
+            let data = $(this).serialize();
+            let url = localStorage.getItem('APIURL_Resident') + "/API/UpdateVehicleDetails.php"; 
+            $.post(url, data, function(res){
+                if(res){
+                    alert("Successfully saved!");
+                    loadUserPage();
+                    $(".modal").modal("hide");
+                }
+                else{
+                    alert("Failed to save updates. Please try again.")
+                }
+            }, 'json')
+            .fail( function(xhr, status, message){
+                alert("Error has occured. " + message);
+            });
+        });
+
+        $("#main").on('click', ".btnEditVehicle", function(){
+            let ID = $(this).parent().attr("id");
+            let url = localStorage.getItem('APIURL_Resident') + "/API/GetVehicleDetails.php?ID=" + ID;
+            $.get(url, function(res){
+                if(res != null){
+                    let $frm = $("#frmEditVehicleDetails");
+                    $("#frmEditVehicleDetails").trigger("reset");
+                    let obj = JSON.parse(localStorage.getItem("UserObj_Resident"));
+                    console.log(res);
+                    $frm.find("input[name=txtModel]").val(res.Model);
+                    $frm.find("input[name=txtColor]").val(res.Color);
+                    $frm.find("input[name=txtPlateNumber]").val(res.PlateNumber);
+                    $frm.find("input[name=txtVehicleID]").val(ID);
+                    $frm.find("input[name=txtUpdatedBy]").val(obj.DataCenterID);
+
+                    $("#mdlEditVehicleDetails").modal("show");
+                }
+                else{
+                    alert("Error has occured. Please check connection to server.");
+                }
+            }, 'json')
+            .fail( function(xhr, status, message){
+                alert("Error has occured. " + message);
+            });
+
+            
+        });
+
+        $("#main").on('click', ".btnQRVehicle", function(){
+            let QRCode = $(this).parent().find("div").html();
+            console.log(QRCode);
+            loadQRCodePage_Custom(QRCode);
+        });
+
+        $("#main").on('click', "#btnViewAllHouseHoldVisitorLogsBackToHome", function(){
+            currentNavItemID = "navItemProfile";
+            loadUserPage();
+        });
+
+        $("#main").on('click', "#btnViewAllHouseHoldLogsBackToHome", function(){
+            currentNavItemID = "navItemProfile";
+            loadUserPage();
+        });
+
+        $("#main").on('click', "#btnViewAllVisitorsBackToHome", function(){
+            currentNavItemID = "navItemHome";
+            loadHomepage();
+        });
+
+        $("#main").on("submit", "#frmSearchPersonalLogs", function(event){
+            event.preventDefault();
+            let data = $(this).serializeArray();
+            let obj = JSON.parse(localStorage.getItem("UserObj_Resident"));
+            data.push({name : "DataCenterID", value : obj.DataCenterID});
+            let url = localStorage.getItem('APIURL_Resident') + "/API/GetDataCenterGateLogs.php";
+            $.post(url, data, function(res){
+                let $list = $("#listPersonalLogs");
+                $list.html("");
+                if(res.length > 0){
+                    $.each(res, function(indx, value){
+                        $list.append(`
+                                    <li class="list-group-item card mb-1">
+                                        <div class="row">
+                                            <div class="col-12">
+                                                <div class="row">
+                                                    Date of Log : <strong>`+ value.CreatedDateTime +`</strong>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </li>`);
+                    });
+                }
+                else{
+                    $list.append(`<p>No results found...</p>`)
+                }
+            }, 'json')
+            .fail( function(xhr, status, message){
+                alert("Error has occured. " + message);
+            });
+        });
+
+
+        $("#main").on("click","#btnViewPersonalLogs", function(){
+            $.get("viewpersonallogs.html", function(data){
+                $("#main").html(data);
+                var date = new Date();
+                var currentDate = date.toISOString().substring(0,10);
+                $("#frmSearchPersonalLogs input[name=txtDateFrom]").val(currentDate);
+                $("#frmSearchPersonalLogs input[name=txtDateTo]").val(currentDate);
+            })
+        });
+
+        $("#main").on("submit", "#frmSearchMembersLogs", function(event){
+            event.preventDefault();
+            let data = $(this).serializeArray();
+            let obj = JSON.parse(localStorage.getItem("UserObj_Resident"));
+            data.push({name : "HouseHoldID", value : obj.HouseHoldID});
+            let url = localStorage.getItem('APIURL_Resident') + "/API/GetHouseHoldLogs.php";
+            $.post(url, data, function(res){
+                let $list = $("#listMembersLogs");
+                $list.html("");
+                if(res.length > 0){
+                    $.each(res, function(indx, value){
+                        $list.append(`
+                        <li class="list-group-item card mb-1">
+                            <div class="row">
+                                <div class="col-12">
+                                    <div class="row">
+                                        <strong>`+ value.MemberName +`</strong>
+                                    </div>
+                                    <div class="text-muted">
+                                        <div class="row">
+                                            <small><span> Log Date/Time : `+ value.DateOfLogs +`</span></small>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </li>`);
+                    });
+                }
+                else{
+                    $list.append(`<p>No results found...</p>`)
+                }
+            }, 'json')
+            .fail( function(xhr, status, message){
+                alert("Error has occured. " + message);
+            });
+        });
+
+
+        $("#main").on("click","#btnViewMembersLogs", function(){
+            $.get("viewmemberslogs.html", function(data){
+                $("#main").html(data);
+                var date = new Date();
+                var currentDate = date.toISOString().substring(0,10);
+                $("#frmSearchMembersLogs input[name=txtDateFrom]").val(currentDate);
+                $("#frmSearchMembersLogs input[name=txtDateTo]").val(currentDate);
+            })
+        });
+
+        $("#main").on("submit", "#frmSearchVisitorLogs", function(event){
+            event.preventDefault();
+            let data = $(this).serializeArray();
+            let obj = JSON.parse(localStorage.getItem("UserObj_Resident"));
+            data.push({name : "HouseHoldID", value : obj.HouseHoldID});
+            let url = localStorage.getItem('APIURL_Resident') + "/API/GetHouseHoldVisitorLogs.php";
+            $.post(url, data, function(res){
+                let $list = $("#listVisitorLogs");
+                $list.html("");
+                if(res.length > 0){
+                    $.each(res, function(indx, value){
+                        $list.append(`
+                                <li class="list-group-item card mb-1">
+                                    <div class="row">
+                                        <div class="col-12">
+                                            <div class="row">
+                                                <strong>`+ value.VisitorName +`</strong>
+                                            </div>
+                                            <div class="text-muted">
+                                                <div class="row">
+                                                    <small><span> Visit Date/Time : `+ value.RequestDateTime +` | Status : `+ value.VisitStatus +`</span></small>
+                                                </div>
+                                                <div class="row visitOtherDetails">
+                                                    <small>
+                                                        <span> Approved By : `+ value.ApprovedBy +` 
+                                                            <br> 
+                                                            Approved Date/Time  : `+ value.ApprovedDateTime +`
+                                                            <br>
+                                                            Purpose of Visit : `+ value.ReasonForVisit +`
+                                                        </span>
+                                                    </small>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </li>`);
+                    });
+                }
+                else{
+                    $list.append(`<p>No results found...</p>`)
+                }
+            }, 'json')
+            .fail( function(xhr, status, message){
+                alert("Error has occured. " + message);
+            });
+        });
+
+        $("#main").on("click","#btnViewVisitorsLogs", function(){
+            $.get("viewvisitorlogs.html", function(data){
+                $("#main").html(data);
+                var date = new Date();
+                var currentDate = date.toISOString().substring(0,10);
+                $("#frmSearchVisitorLogs input[name=txtDateFrom]").val(currentDate);
+                $("#frmSearchVisitorLogs input[name=txtDateTo]").val(currentDate);
+            })
+        });
+
+        $("#main").on("click","#btnUpdatePhoto", function(){
+            let cnf = confirm("Are you sure you want to update photo?");
+            if(cnf){
+                let obj = JSON.parse(localStorage.getItem("UserObj_Resident"));
+                let data  = {
+                    Base64 : $("#frmUserDetailsPage input[name=txtPhoto]").val(),
+                    ExtName : $("#frmUserDetailsPage input[name=txtPhotoExt]").val(),
+                    DataCenterID : obj.DataCenterID
+                };
+                let url = localStorage.getItem('APIURL_Resident') + "/API/UpdateResidentPhoto.php";
+                $.post(url, data, function(res){
+                    if(res.result){
+                        alert("New photo has been updated successfully");  
+                        obj.DataCenterPhoto = data.Base64;
+                        localStorage.setItem("UserObj_Resident", JSON.stringify(obj));
+                        loadUserPage();
+                    }
+                    else{
+                        alert("Failed save new record.");
+                    }
+                }, 'json')
+                .fail( function(xhr, status, message){
+                    alert("Error has occured. " + message);
+                });
+            }
+        });
+
+        $("#main").on("change","#frmUserDetailsPage input[name=txtFile]", function(){
+            var files = document.getElementById('changePhoto').files;
+            console.log(files);
+			if (files.length > 0) {
+				console.log(files[0]);
+				var reader = new FileReader();
+				reader.readAsDataURL(files[0]);
+				reader.onload = function () {
+					let base64 = reader.result;
+					document.getElementById("residentPhoto").setAttribute("src", base64);
+					$("#frmUserDetailsPage input[name=txtPhoto]").val(base64);
+					$("#frmUserDetailsPage input[name=txtPhotoExt]").val(files[0].type.replace("image/","."));
+					
+				};
+				reader.onerror = function (error) {
+					console.log('Error: ', error);
+				};
+			}
+        });
+
+        $("#main").on('click', '#btnDownloadQR', function(){
+			//ReImg.fromCanvas(document.getElementById('cvsQR')).downloadPng();
+            // var link = document.createElement('a');
+            // link.download = 'QRCode.png';
+            // link.href = document.getElementById('cvsQR').toDataURL()
+            // link.click();
+
+            let $img = document.getElementById('cvsQR').toDataURL();
+            let url = localStorage.getItem('APIURL_Resident') + "/API/qrrender.php";
+            let data = {QRCode : $img, QRCodeText : $("#qrcodeString").html()};
+            $.post(url, data, function(res){
+                const link = document.createElement("a");
+                link.href = res.URL;
+                link.download = res.filename;
+                link.click();
+            }, 'json')
+            .fail( function(xhr, status, message){
+                alert("Error has occured. " + message);
+            });
+		});
+
+        $("#main").on('click', "#btnLogout", function(){
+            let confirmres = confirm("Are you sure you want to logout account?");
+            if(confirmres){
+                $("#loginForm").slideDown();
+            }
+        });
+
+        $("#main").on('submit', '#frmNewHouseHoldVehicle', function(event){
+            event.preventDefault();
+            let data = $(this).serialize();
+            let url = localStorage.getItem('APIURL_Resident') + "/API/AddHouseholdVehicle.php";
+            $.post(url, data, function(res){
+                if(res.result){
+                        alert("New household vehicle was successfully saved.");  
+                        loadUserPage();
+                    }
+                    else{
+                        alert("Failed save new record.");
+                    }
+            },'json')
+            .fail( function(xhr, status, message){
+                alert("Error has occured. " + message);
+            });
+        });
+
+        $("#main").on('click', '#btnAddHouseHoldVehicle', function(){
+            $.get("addhouseholdvehicle.html", function(data){
+                $("#main").html(data);
+                let obj = JSON.parse(localStorage.getItem("UserObj_Resident"));
+                let $frm = $("#frmNewHouseHoldVehicle");
+                $frm.find("input[name=txtCreatedBy]").val(obj.DataCenterID);
+                $frm.find("input[name=txtHouseHoldID]").val(obj.HouseHoldID);
+            });
+        });
+
+        $("#main").on('submit', '#frmNewHouseHoldMember', function(event){
+            event.preventDefault();
+            let data = $(this).serialize();
+            let url = localStorage.getItem('APIURL_Resident') + "/API/addhouseholdmember.php";
+            $.post(url, data, function(res){
+                if(res.result){
+                        alert("New household member was successfully saved.");  
+                        loadUserPage();
+                    }
+                    else{
+                        alert("Failed save new record.");
+                    }
+            },'json')
+            .fail( function(xhr, status, message){
+                alert("Error has occured. " + message);
+            });
+        });
+
+        $("#main").on('click', '#btnAddHouseHoldMember', function(){
+            $.get("addhouseholdmember.html", function(data){
+                $("#main").html(data);
+                let obj = JSON.parse(localStorage.getItem("UserObj_Resident"));
+                let $frm = $("#frmNewHouseHoldMember");
+                $frm.find("input[name=txtCreatedBy]").val(obj.DataCenterID);
+                $frm.find("input[name=txtHouseHoldID]").val(obj.HouseHoldID);
+            });
+        });
+
+        $("#main").on("click", "#btnRejectVisitation", function(){
+            let ID = $("#txtVLID").val();
+            let confirmuser = confirm("Are you sure you want to reject this visitation?");
+            if(confirmuser){
+                let url = localStorage.getItem('APIURL_Resident') + "/API/RejectVisitApplication.php";
+                let obj = JSON.parse(localStorage.getItem("UserObj_Resident"));
+                let data = {VLID : ID}
+                $.post(url, data, function(res){
+                    if(res.result){
+                        alert("Visit Application has been rejected");  
+                        loadHomepage();
+                    }
+                    else{
+                        alert("Failed to reject visit application.");
+                    }
+                }, 'json')
+                .fail( function(xhr, status, message){
+                    alert("Error has occured. " + message);
+                });
+            }
+        });
+
+        $("#main").on("click", "#btnApproveVisitApplication", function(){
+            let ID = $("#txtVLID").val();
+            let confirmuser = confirm("Are you sure you want to approve this visitation?");
+            if(confirmuser){
+                let url = localStorage.getItem('APIURL_Resident') + "/API/ApproveVisitApplication.php";
+                let obj = JSON.parse(localStorage.getItem("UserObj_Resident"));
+                let data = {VLID : ID, ApprovedBy: obj.DataCenterID}
+                $.post(url, data, function(res){
+                    if(res.result){
+                        alert("Visit Application has been approved");  
+                        loadHomepage();
+                    }
+                    else{
+                        alert("Failed to approve visit application.");
+                    }
+                }, 'json')
+                .fail( function(xhr, status, message){
+                    alert("Error has occured. " + message);
+                });
+            }
+        });
+
+        $("#main").on("click", '#listHouselHoldVisitorsForApproval .btnViewVisitApplication', function(){
+            let ID = $(this).parent().parent().parent().prop("id");
+            $.get("ViewVisitApplication.html", function(data){
+                $("#main").html(data);
+                let url = localStorage.getItem('APIURL_Resident') + "/API/GetVisitApplicationDetailsByID.php?ID="+ID;
+                $.get(url, function(res){
+                    $("#lblVisitorName").html(res.VisitorName);
+                    $("#lblVisitDetails").html(res.ReasonForVisit);
+                    $("#txtVLID").val(ID);
+                }, 'json');
+            });
+        });
+
+        $("#main").on('click', '#visitorsListBlackListed .btnRemoveVistorFromBlackList', function(){
+            let $parent = $(this).parent().parent();
+            let VisitorID = $(this).prop("id");
+            let VisitorName = $(this).next().html();
+            let ID = $parent.prop("id");
+            let confirmuser = confirm("Are you sure you want to remove visitor from blacklist?");
+            if(!confirmuser)
+                return;
+
+            let data = {VBID : ID};
+            let url = localStorage.getItem('APIURL_Resident') + "/API/RemoveVisitorFromBlackList.php";
+            $.post(url, data, function(res){
+                if(res.result){
+                        alert("Visitor has been removed from blacklist.");  
+                        $("#visitorsListOthers").append(`<li id="`+ VisitorID +`" class="list-group-item">
+                                                            <div class="row">
+                                                                <p class="visitorName col-11">`+ VisitorName +`</p>
+                                                                <button class="btn btn-link btnVisitorShowOptions col-1 m-0">
+                                                                    <span class="fas fa-ellipsis-v"></span>
+                                                                </button>
+                                                            </div>
+                                                            <div class="row m-0 visitorOptions" style="display:none">
+                                                                <button class="btn btn-primary btnAddVisitorToWhiteList col-6 m-0" style="height:30px">
+                                                                    <span class="fas fa-plus"></span>
+                                                                    Whitelist
+                                                                </button>
+                                                                <button class="btn btn-secondary btnAddVisitorToBlackList col-6 m-0">
+                                                                    <span class="fas fa-plus"></span>
+                                                                    Blacklist
+                                                                </button>
+                                                            </div>
+                                                        </li>`);
+                        $parent.remove();
+                    }
+                    else{
+                        alert("Failed to remove visitor from blacklist.");
+                    }
+            }, 'json')
+            .fail( function(xhr, status, message){
+                alert("Error has occured. " + message);
+            });
+        })
+
+        $("#main").on('click', '#visitorsListWhitelisted .btnRemoveVistorFromWhiteList', function(){
+            let $parent = $(this).parent().parent();
+            let VisitorID = $(this).prop("id");
+            let VisitorName = $(this).next().html();
+            let ID = $parent.prop("id");
+            let confirmuser = confirm("Are you sure you want to remove visitor from whitelist?");
+            if(!confirmuser)
+                return;
+            let data = {VWID : ID};
+            let url = localStorage.getItem('APIURL_Resident') + "/API/RemoveVisitorFromWhiteList.php";
+            $.post(url, data, function(res){
+                if(res.result){
+                        alert("Visitor has been removed from whitelist.");  
+                        $("#visitorsListOthers").append(`<li id="`+ VisitorID +`" class="list-group-item">
+                                                            <div class="row">
+                                                                <p class="visitorName col-11">`+ VisitorName +`</p>
+                                                                <button class="btn btn-link btnVisitorShowOptions col-1 m-0">
+                                                                    <span class="fas fa-ellipsis-v"></span>
+                                                                </button>
+                                                            </div>
+                                                            <div class="row m-0 visitorOptions" style="display:none">
+                                                                <button class="btn btn-primary btnAddVisitorToWhiteList col-6 m-0" style="height:30px">
+                                                                    <span class="fas fa-plus"></span>
+                                                                    Whitelist
+                                                                </button>
+                                                                <button class="btn btn-secondary btnAddVisitorToBlackList col-6 m-0">
+                                                                    <span class="fas fa-plus"></span>
+                                                                    Blacklist
+                                                                </button>
+                                                            </div>
+                                                        </li>`);
+                        $parent.remove();
+                    }
+                    else{
+                        alert("Failed to remove visitor from whitelist.");
+                    }
+            }, 'json')
+            .fail( function(xhr, status, message){
+                alert("Error has occured. " + message);
+            });
+        })
+
+        $("#main").on('click', '#visitorsListOthers .btnAddVisitorToBlackList', function(){
+            let ID = $(this).parent().parent().prop("id");
+            let $parent = $(this).parent().parent();
+            let visitorName = $parent.find(".visitorName").html();
+            let confirmuser = confirm(`Are you sure you want to add this visitor to blacklist.`+
+                                        `They will be automatically blocked access on gate if intention is to visit your household.`)
+            if(confirmuser){
+                let obj = JSON.parse(localStorage.getItem("UserObj_Resident"));
+                let data = {CreatedBy : obj.DataCenterID, HouseHoldID : obj.HouseHoldID, VisitorID : ID};
+                let url = localStorage.getItem('APIURL_Resident') + "/API/AddVisitorToBlackList.php";
+                $.post(url, data, function(res){
+                    if(res.result){
+                        alert("Visitor has been added to blacklist.");  
+                        $("#visitorsListBlackListed").append(`<li id="`+ res.ID +`" class="list-group-item">
+                                                                <div class="row m-0">
+                                                                    <button id="`+ ID +`" class="btn btn-danger btnRemoveVistorFromBlackList col-1 m-0">
+                                                                        <span class="fas fa-window-close"></span>
+                                                                    </button>
+                                                                    <p class="visitorName col-11 m-0">`+ visitorName +`</p>
+                                                                </div>
+                                                            </li>`);
+                        $parent.remove();
+                    }
+                    else{
+                        alert("Failed to whitelist visitor.");
+                    }
+                }, 'json')
+                .fail( function(xhr, status, message){
+                    alert("Error has occured. " + message);
+                });
+            }
+        }); 
+
+        $("#main").on('click', '#visitorsListOthers .btnAddVisitorToWhiteList', function(){
+            let ID = $(this).parent().parent().prop("id");
+            let $parent = $(this).parent().parent();
+            let visitorName = $parent.find(".visitorName").html();
+            let confirmuser = confirm(`Are you sure you want to add this visitor to whitelist.`+
+                                        `You would no longer be asked for approval if visitor enters subdivision premises with intent to visit you.`)
+            if(confirmuser){
+                let obj = JSON.parse(localStorage.getItem("UserObj_Resident"));
+                let data = {CreatedBy : obj.DataCenterID, HouseHoldID : obj.HouseHoldID, VisitorID : ID};
+                let url = localStorage.getItem('APIURL_Resident') + "/API/AddVisitorToWhiteList.php?";
+                $.post(url, data, function(res){
+                    if(res.result){
+                        alert("Visitor has been added to whitelist.");  
+                        $("#visitorsListWhitelisted").append(`<li id="`+ res.ID +`" class="list-group-item">
+                                                <div class="row m-0">
+                                                    <button id="`+ ID +`" class="btn btn-danger btnRemoveVistorFromWhiteList col-1 m-0">
+                                                        <span class="fas fa-window-close"></span>
+                                                    </button>
+                                                    <p class="visitorName col-11 m-0">`+ visitorName +`</p>
+                                                </div>
+                                            </li>`);
+                        $parent.remove();
+                    }
+                    else{
+                        alert("Failed to whitelist visitor.");
+                    }
+                }, 'json')
+                .fail( function(xhr, status, message){
+                    alert("Error has occured. " + message);
+                });
+            }
+        }); 
+
+        $("#main").on('click', '#visitorsListOthers .btnVisitorShowOptions', function(){
+            $(this).parent().next().slideToggle();
+        }); 
+
+        $("#main").on('click', '#accordionExample .btnCollapseTrigger', function(){
+            let target = $(this).attr("data-target");
+            console.log(target);
+            $(""+target+"").collapse('toggle');
+        })
+
+        $("#main").on('click', '#lnkViewAllVisitors', function(){
+            $.get("viewallvisitors.html", function(data){
+                $("#main").html(data);
+                let obj = JSON.parse(localStorage.getItem("UserObj_Resident"));
+                let url = localStorage.getItem('APIURL_Resident') + "/API/GetHouseHoldVisitors.php?ID=" + obj.HouseHoldID ;
+                $.get(url, function(res){
+                    if(res.length > 0){
+                        let visitorMasterList = res;
+                        let visitorWhitelisted = res.filter(x => x.isWhiteListed == true);
+                        let visitorBlacklisted = res.filter(x => x.isBlackListed == true);
+                        let visitorNormalList = res.filter(x => x.isWhiteListed == false && x.isBlackListed == false);
+
+                        let listWL = $("#visitorsListWhitelisted");
+                        let listBL = $("#visitorsListBlackListed");
+                        let listOthers = $("#visitorsListOthers");
+                        listWL.html("");
+                        listBL.html("");
+                        listOthers.html("");
+
+                        $.each(visitorWhitelisted, function(indx, value){
+                            listWL.append(`<li id="`+ value.VWID +`" class="list-group-item">
+                                                 <div class="row m-0">
+                                                    <button id="`+ value.VisitorID+`" class="btn btn-danger btnRemoveVistorFromWhiteList col-1 m-0">
+                                                        <span class="fas fa-window-close"></span>
+                                                    </button>
+                                                    <p class="visitorName col-11 m-0">`+ value.VisitorName +`</p>
+                                                </div>
+                                            </li>`);
+                        });
+
+                        $.each(visitorBlacklisted, function(indx, value){
+                            listBL.append(`<li id="`+ value.VBID +`" class="list-group-item">
+                                                <div class="row m-0">
+                                                    <button id="`+ value.VisitorID+`" class="btn btn-danger btnRemoveVistorFromBlackList col-1 m-0">
+                                                        <span class="fas fa-window-close"></span>
+                                                    </button>
+                                                    <p class="visitorName col-11 m-0">`+ value.VisitorName +`</p>
+                                                </div>
+                                            </li>`);
+                        });
+
+                        $.each(visitorNormalList, function(indx, value){
+                            listOthers.append(`<li id="`+ value.VisitorID +`" class="list-group-item">
+                                                <div class="row">
+                                                    <p class="visitorName col-11">`+ value.VisitorName +`</p>
+                                                    <button class="btn btn-link btnVisitorShowOptions col-1 m-0">
+                                                        <span class="fas fa-ellipsis-v"></span>
+                                                    </button>
+                                                </div>
+                                                <div class="row m-0 visitorOptions" style="display:none">
+                                                    <button class="btn btn-primary btnAddVisitorToWhiteList col-6 m-0" style="height:30px">
+                                                        <span class="fas fa-plus"></span>
+                                                        Whitelist
+                                                    </button>
+                                                    <button class="btn btn-secondary btnAddVisitorToBlackList col-6 m-0">
+                                                        <span class="fas fa-plus"></span>
+                                                        Blacklist
+                                                    </button>
+                                                </div>
+                                            </li>`);
+                        });
+                    }
+                    else{
+                        $("#listHouseHoldVisitors ul").html("No visitors...")
+                    }
+                }, 'json');
+            });
+        });
+        
+        $("#main").on('click', '#listRecentAnnouncements .btnViewRecentAnnouncement', function(){
+            let ID = $(this).parent().parent().parent().prop('id');
+            $.get("viewannouncements.html", function(data){
+                $("#main").html(data);
+                let url = localStorage.getItem('APIURL_Resident') + "/API/GetAnnouncementDetails.php?ID="+ID;
+                $.get(url, function(res){
+                    $("#announcementTitle").html(res.Title);
+                    $("#announcementType").html(res.AnnouncementType);
+                    $("#announcementDetails").html(res.Details);
+                }, 'json')
+                .fail( function(xhr, status, message){
+                    alert("Error has occured. " + message + ". status : " + status + " xhr : " + xhr);
+                });
+            });
+        });
+
+        $("#frmChangeUserCredentials").submit( function(event){
+            event.preventDefault();
+            let pass = $("#frmChangeUserCredentials").find("input[name=txtUserPass]").val();
+            let passConfirm = $("#frmChangeUserCredentials").find("input[name=txtUserPassConfirm]").val();
+            if(pass != passConfirm){
+                alert("Passwords do not match.");
+                return;
+            }
+
+            let url = localStorage.getItem('APIURL_Resident') + "/API/ChangeUserCredentials.php";
+            let data = $(this).serializeArray();
+            let obj = JSON.parse(localStorage.getItem("UserObj_Resident"));
+            data.push({name : "DataCenterID", value : obj.DataCenterID});
+            $.post(url, data, function(res){
+                if(res.result){
+                    alert("Credentials successfully updated.");
+                    $(".modal").modal('hide');
+                    location.reload();
+                }
+                else{
+                    alert("Failed to update credentials. " + res.message)
+                }
+            }, 'json')
+            .fail( function(xhr, status, message){
+				alert("Error has occured. " + message);
+			});
+        });
+
+        $("#main").on('click', "#btnChangePassword", function(){
+            let obj = JSON.parse(localStorage.getItem("UserObj_Resident"));
+            $("#frmChangeUserCredentials").trigger("reset");
+            $("#frmChangeUserCredentials").find("input[name=txtUserName]").val(obj.Username);
+            $("#mdlChangeCredentials").modal("show");
+        });
+        
+        $("#frmEditReport").submit( function(event){
+            event.preventDefault();
+            let url = localStorage.getItem('APIURL_Resident') + "/API/EditReport.php";
+            let data = $(this).serializeArray();
+            data.push({name:"ReporterID", value : UserObj.DataCenterID});
+            $.post(url, data, function(res){
+                if(res.result){
+					alert("Report has been successfully saved.");
+					$(".modal").modal('hide');
+				}
+				else{
+					alert("Failed to save new report.");
+				}
+            }, 'json')
+            .fail( function(xhr, status, message){
+                alert("Error has occured !" +  message);
+            });
+        });
+
+        $("#frmNewReport").submit( function(event){
+            event.preventDefault();
+            let url = localStorage.getItem('APIURL_Resident') + "/API/CreateNewReport.php";
+            let data = $(this).serializeArray();
+            data.push({name:"ReporterID", value : UserObj.DataCenterID});
+            $.post(url, data, function(res){
+                if(res.result){
+					alert("Report has been successfully saved.");
+					$(".modal").modal('hide');
+				}
+				else{
+					alert("Failed to save new report.");
+				}
+            }, 'json')
+            .fail( function(xhr, status, message){
+                alert("Error has occured !" +  message);
+            });
+        });
+
+        $("#main").on('click', '.reportItem .btnEditReport', function(){
+            let ID = $(this).parent().parent().parent().parent().prop('id');
+            let url = localStorage.getItem('APIURL_Resident') + "/API/GetReportDetailsByID.php?ReportID="+ID;
+            $.get(url, function(res){
+                let $frm = $("#frmEditReport");
+                $frm.find('select[name=cboTypes][value='+res.ReportTypeID+']').prop('selected', true);
+                $frm.find('textarea[name=txtReportDetails]').html(res.ReportDetails);
+                $frm.find('input[name=txtID]').val(res.ReportID);
+                $frm.find('input[name=chkIsActive]').prop('checked', res.isActive);
+                $("#mdlEditReport").modal('show');
+            }, 'json')
+        });
+
+        $("#main").on('click', '.reportItem .btnViewReport', function(){
+            let ID = $(this).parent().parent().parent().parent().prop('id');
+            
+            let url = localStorage.getItem('APIURL_Resident') + "/API/GetReportDetailsByID.php?ReportID="+ID;
+            $.get(url, function(res){
+                console.log(res);
+                let $frm = $("#frmViewReport");
+                $frm.find('input[name=txtReportType]').val(res.ReportType);
+                $frm.find('input[name=txtReportStatus]').val(res.ReportStatus);
+                $frm.find('input[name=txtReportedBy]').val(res.CreatedBy);
+                $frm.find('input[name=txtReportedDateTime]').val(res.CreatedDateTime);
+                $frm.find('textarea[name=txtReportDetails]').html(res.ReportDetails);
+                $frm.find('input[name=txtAcknowledgedBy]').val(res.AcknowledgedBy);
+                $frm.find('input[name=txtAcknowledgedDateTime]').val(res.AcknowledgedDateTime);
+                $frm.find('textarea[name=txtAcknowledgedmentRemarks]').html(res.ReportAcknowledgementRemarks);
+                $frm.find('input[name=txtTaggedResolvedBy]').val(res.ResolvedBy);
+                $frm.find('input[name=txtTaggedResolvedDateTime]').val(res.ResolvedDateTime);
+                $frm.find('textarea[name=txtTaggedResolvedRemarks]').html(res.ReportResolveRemarks);
+                $("#mdlViewReport").modal('show');
+            }, 'json')
+        });
+
+        $("#main").on('click', '#btnNewReport', function(){
+            $("#mdlNewReport").modal('show');
+        });
+
+        $("#main").on('submit', '#frmSearchReports', function(event){
+            event.preventDefault();
+            let url = localStorage.getItem('APIURL_Resident') + "/API/GetResidentReports.php";
+            let data = $(this).serializeArray();
+            data.push({name : "ResidentID", value : UserObj.DataCenterID});
+            console.log(data);
+            $.post(url, data, function(res){
+                let $list = $("#reportsList");
+                $list.html("");
+                $("#lblReportsCount").html(res.length);
+                if(res.length > 0){
+                    $.each(res, function(indx, value){
+                        $list.append(`
+                        <div class="card mb-3 reportItem" id="`+ value.ReportID +`" >
+                            <div class="card-body">
+                            <h6 class="card-title">Report No : `+ value.ReportNo +`</h6>
+                            <hr style="margin: 5px;">
+                            <p class="card-text">
+                                <label>Date Reported : <span>`+ value.CreatedDateTime +`</span></label>
+                                <br/>
+                                <label>Status : <span>`+ value.ReportStatus +`</span></label>
+                            </p>
+                            <hr style="margin: 5px;">
+                            <div class="row">
+                                <div class="col-6">
+                                    <button class="btn btn-primary btnViewReport w-100">
+                                        <span class="fas fa-eye"></span>
+                                        View
+                                    </button>
+                                </div>
+                                <div class="col-6">
+                                    <button class="btn btn-warning btnEditReport w-100" style="display:`+(parseInt(value.isAllowUpdateStatus) > 0 ? "block" : "none")+`">
+                                        <span class="fas fa-edit"></span>
+                                        Edit
+                                    </button>
+                                </div>
+                            </div>
+                            </div>
+                        </div>
+                            `);
+                    });
+                }
+                
+            }, 'json')
+            .fail( function(xhr, status, message){
+                alert("Error has occured !" +  message);
+            });
+        }) ;
+
+        $(".navMainItem").click( function(){
+            let id = $(this).prop("id");
+            if(id != currentNavItemID && id == "navItemHome"){
+                currentNavItemID = id;
+                loadHomepage();
+            }
+            else if(id != currentNavItemID && id == "navItemQR"){
+                currentNavItemID = id;
+                loadQRCodePage();
+            }
+            else if(id != currentNavItemID && id == "navItemReports"){
+                currentNavItemID = id;
+                loadReportsPage();
+            }
+            else if(id != currentNavItemID && id == "navItemProfile"){
+                currentNavItemID = id;
+                loadUserPage();
+            }
+            $(".navMainItem").removeClass('active');
+            $(this).addClass('active');
+        });
+
+        $("#frmLogin").submit( function(event){
+            event.preventDefault();
+            let url = localStorage.getItem('APIURL_Resident') + "/API/Userlogin.php";
+            let data = $(this).serialize();
+            $.post(url, data, function(res){
+                if(res != undefined){
+                    UserObj = res;
+                    localStorage.setItem("UserObj_Resident", JSON.stringify(res));
+                    $("#loginForm").slideUp();
+                    loadHomepage();
+                }
+                else{
+                    alert("User not found or mismatched credentials.");
+                }
+            }, 'json')
+            .fail( function(xhr, status, message){
+                alert("Error has occured. " + message);
+            });
+        });
+
+        $("#frmChangeConnection").submit( function(event){
+            event.preventDefault();
+            localStorage.setItem("APIURL_Resident", $("#frmChangeConnection input[name=txtURL]").val());
+            $(".modal").modal('hide');
+        });
+        $("#btnChangeConnection").click( function(){
+            $("#frmChangeConnection input[name=txtURL]").val(localStorage.getItem("APIURL_Resident"))
+            $("#mdlChangeConnection").modal('show');
+        });
+
+        
+        ///////////////////////
+        function loadHomepage(){
+            $.get("homepage.html", function(data){
+                $("#main").html(data);
+                $("#mainGreetUsername").html(UserObj.FirstName);
+                loadRecentAnnouncements();
+                loadHouseHoldVisitors();
+                loadHouseHoldVisitsForApproval();
+            });
+        }
+
+        function loadQRCodePage(){
+            $.get("QRCode.html", function(data){
+            //$.get("API/qrrender.php", function(data){
+                $("#main").html(data);
+                $("#qrcode").qrcode({
+						text : UserObj.QRCode,
+						width : $("#qrcode").width(),
+						height : $("#qrcode").width()
+					});
+                $("#qrcodeString").html(UserObj.QRCode)
+                $("#qrcode").find("canvas").attr("id", "cvsQR");
+            });
+        }
+
+        function loadQRCodePage_Custom(QRCode){
+            $.get("QRCode.html", function(data){
+            //$.get("API/qrrender.php", function(data){
+                $("#main").html(data);
+                $("#qrcode").qrcode({
+						text : QRCode,
+						width : $("#qrcode").width(),
+						height : $("#qrcode").width()
+					});
+                $("#qrcodeString").html(QRCode)
+                $("#qrcode").find("canvas").attr("id", "cvsQR");
+            });
+        }
+
+        function loadReportsPage(){
+            $.get("reports.html", function(data){
+                $("#main").html(data);
+                var date = new Date();
+                var currentDate = date.toISOString().substring(0,10);
+                $("#frmSearchReports input[name=txtDateStart]").val(currentDate);
+                $("#frmSearchReports input[name=txtDateEnd]").val(currentDate);
+                loadReportTypes();
+                
+            });
+        }
+
+        function loadUserPage(){
+            $.get("userpage.html", function(data){
+                $("#main").html(data);
+                let obj = JSON.parse(localStorage.getItem("UserObj_Resident"));
+                console.log(obj);
+                let $frm = $("#frmUserDetailsPage");
+                $frm.find("input[name=txtUserCompleteName]").val(obj.ResidentName);
+                $frm.find("input[name=txtGender]").val(obj.Gender);
+                $frm.find("input[name=txtBirthdate]").val(obj.BirthDate);
+                $frm.find("input[name=txtContactNo]").val(obj.ContactNo);
+                $frm.find("input[name=txtEmailAddress]").val(obj.EmailAddress);
+                $frm.find("input[name=txtUsername]").val(obj.Username);
+                $frm.find("input[name=txtPassword]").val(obj.Userpass);
+                document.getElementById("residentPhoto").setAttribute("src", obj.DataCenterPhoto);
+                if(!obj.isHouseHoldContactPerson){
+                    $("#btnAddHouseHoldMember").hide();
+                    $("#btnAddHouseHoldVehicle").hide();
+                    $("#btnViewVisitorsLogs").hide();
+                    $("#btnViewMembersLogs").hide();
+                }
+
+                //load householdmembers
+                let url = localStorage.getItem('APIURL_Resident') + "/API/GetResidentHouseHoldMembers.php?DataCenterID=" + obj.DataCenterID;
+                $.get(url, function(res){
+                    let $list = $("#HouseHoldList");
+                    $list.html("");
+                    console.log(res);
+                    $.each(res, function(index, value){
+                        $list.append(`<li class="list-group-item" id="`+ value.DataCenterID +`">
+                                        <span>`+ value.HouseHoldMemberName +`</span>
+                                    </li>`)
+                    })
+                }, 'json')
+
+                //load household vehicles
+                url = localStorage.getItem('APIURL_Resident') + "/API/GetHouseholdVehicles.php?ID=" + obj.HouseHoldID;
+                $.get(url, function(res){
+                    let $list = $("#VehiclesList");
+                    $list.html("");
+                    console.log(res);
+                    $.each(res, function(index, value){
+                        $list.append(`<li id="`+ value.VehicleID +`" class="list-group-item">
+                                        <button class="btn btn-primary btnQRVehicle"><span class="fas fas fa-qrcode"></span></button>
+                                        <button class="btn btn-warning btnEditVehicle"><span class="fas fa-edit"></span></button>
+                                        <button class="btn btn-danger btnRemoveVehicle"><span class="fas fa-trash"></span></button>
+                                        <div style="display:none">`+ value.QRCode +`</div>
+                                        `
+                                        + value.Model +` | `+ value.PlateNumber +
+                                        `</li>`)
+                    })
+                }, 'json')
+
+            })
+        }
+
+
+        function loadRecentAnnouncements(){
+            let url = localStorage.getItem('APIURL_Resident') + "/API/GetRecentAnnouncements.php";
+            $.get(url, function(res){
+                console.log(res);
+                if(res.length > 0){
+                    
+                    let $list = $("#listRecentAnnouncements ul");
+                    $list.html("");
+                    $.each(res, function(indx, value){
+                        $list.append(`
+                        <li id="`+ value.AnnouncementID +`" class="list-group-item">
+                            <div class="row">
+                                <div class="col-2">
+                                    <button class="btn btn-primary btnViewRecentAnnouncement">
+                                        <span class="fas fa-eye"></span>
+                                    </button>
+                                </div>
+                                <div class="col-10">
+                                    <label>`+ value.Title +`</label>
+                                    <label>`+ value.PublishedDateTime + " | " + value.AnnouncementType +`</label>
+                                </div>
+                            </div>
+                        </li>
+                            `);
+                    });
+                }
+                else{
+                    $("#listRecentAnnouncements ul").html("No recent announcements...")
+                }
+            }, 'json');
+        }
+
+        function loadHouseHoldVisitors(){
+            let url = localStorage.getItem('APIURL_Resident') + "/API/GetHouseHoldVisitors.php?ID=" + UserObj.HouseHoldID ;
+            $.get(url, function(res){
+                console.log(res);
+                if(res.length > 0){
+                    
+                    let $list = $("#listHouseHoldVisitors ul");
+                    $list.html("");
+                    $.each(res, function(indx, value){
+                        if(indx < 5){
+                            $list.append(`
+                                <li id="`+ value.VisitorID +`" class="list-group-item">
+                                    `+ value.VisitorName +`
+                                </li>
+                            `);
+                        }
+                        else{
+                            return false;
+                        }
+                    });
+                }
+                else{
+                    $("#listHouseHoldVisitors ul").html("No visitors...")
+                }
+            }, 'json');
+        }
+
+        function loadHouseHoldVisitsForApproval(){
+            let url = localStorage.getItem('APIURL_Resident') + "/API/GetAllVisitsForApproval.php?ID=" + UserObj.HouseHoldID ;
+            $.get(url, function(res){
+                console.log(res);
+                if(res.length > 0){
+                    
+                    let $list = $("#listHouselHoldVisitorsForApproval ul");
+                    $list.html("");
+                    $.each(res, function(indx, value){
+                        $list.append(`
+                        <li id="`+ value.VLID +`" class="list-group-item">
+                            <div class="row">
+                                <div class="col-2">
+                                    <button class="btn btn-primary btnViewVisitApplication">
+                                        <span class="fas fa-eye"></span>
+                                    </button>
+                                </div>
+                                <div class="col-10">
+                                    <label>`+ value.VisitorName +`</label>
+                                </div>
+                            </div>
+                        </li>
+                            `);
+                    });
+                }
+                else{
+                    $("#listHouselHoldVisitorsForApproval ul").html("No visitors...")
+                }
+            }, 'json');
+        }
+
+        function loadReportTypes(){ 
+            let url = localStorage.getItem('APIURL_Resident') + "/API/GetReportTypes.php";
+            let data = {txtSearch : ""};
+            $.post(url, data, function(res){
+                let $rptType = $("#frmSearchReports select[name=cboTypes]");
+                $rptType.html("");
+                $rptType.append(`<option value="0">All</option>`);
+                let $rptTypeForNewReport = $("#frmNewReport select[name=cboTypes]");
+                $rptTypeForNewReport.html("");
+                let $rptTypeForEditReport = $("#frmEditReport select[name=cboTypes]");
+                $rptTypeForEditReport.html("");
+                $.each(res, function(indx, value){
+                    $rptType.append(`<option value="`+ value.ReportTypeID +`">`+ value.Description +`</option>`);
+                    $rptTypeForNewReport.append(`<option value="`+ value.ReportTypeID +`">`+ value.Description +`</option>`);
+                    $rptTypeForEditReport.append(`<option value="`+ value.ReportTypeID +`">`+ value.Description +`</option>`);
+                });
+
+            }, 'json');
+        }
+
+        
+    });
+</script>
+
+</html>

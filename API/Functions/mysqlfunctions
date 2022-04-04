@@ -1,0 +1,19 @@
+CREATE FUNCTION GetDataCenterCompleteName(ID INT) 
+RETURNS VARCHAR(512) DETERMINISTIC
+RETURN (SELECT CONCAT(FirstName, ' ', MiddleName, ' ', LastName) as UserCompleteName FROM datacenter WHERE DataCenterID = `ID`)
+
+CREATE FUNCTION GetTableColumns(TableName VARCHAR(255), Alias VARCHAR(255)) 
+RETURNS VARCHAR(512) DETERMINISTIC
+RETURN (SELECT CONCAT('Alias','.',`COLUMN_NAME`)  as ColumnNames
+        FROM `INFORMATION_SCHEMA`.`COLUMNS` 
+        WHERE `TABLE_SCHEMA`='fiestahomesdb' 
+                AND `TABLE_NAME`='TableName'
+        )
+
+
+CREATE FUNCTION GetUserCompleteName(ID INT) 
+RETURNS VARCHAR(512) DETERMINISTIC
+RETURN (SELECT CONCAT(FirstName, ' ', MiddleName, ' ', LastName) as UserCompleteName FROM useraccount WHERE UserID = `ID`)
+
+
+

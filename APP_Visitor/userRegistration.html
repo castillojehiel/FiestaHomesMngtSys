@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<style>
+    .card{
+        max-height: 400px;
+    }
+</style>
+    <div class="col" style="overflow: auto; margin: 10px;">
+        <div class="row">
+            <h3 class="mb-3">Signing Up...</h3>
+        </div>
+        <hr/>
+        <form id="frmRegisterNewUser" style="width: 99%;">
+            <div class="form-group mb-3">
+                <label>First Name :</label>
+                <input type="text" name="txtFirstName" class="form-control" required="">
+            </div>
+            <div class="form-group mb-3">
+                <label>Middle Name :</label>
+                <input type="text" name="txtMiddleName" class="form-control">
+            </div>
+            <div class="form-group mb-3">
+                <label>Last Name :</label>
+                <input type="text" name="txtLastName" class="form-control" required="">
+            </div>
+            <div class="form-group mb-3">
+                <label>Suffix :</label>
+                <input type="text" name="txtSuffix" class="form-control">
+            </div>
+            <div class="form-group mb-3">
+                <label>BirthDate :</label>
+                <input type="date" name="txtBirthdate" class="form-control" required="">
+            </div>
+            <div class="form-group mb-3">
+                <label>Gender :</label>
+                <div class="row">
+                    <div class="col-4">
+                        <input type="radio" name="chkGender" value="Male" checked="">
+                        <label>Male</label>
+                    </div>
+                    <div class="col-4">
+                        <input type="radio" name="chkGender" value="Female">
+                        <label>Female</label>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group mb-3">
+                <label>Contact No :</label>
+                <input type="text" name="txtContactNo" class="form-control">
+            </div>
+            <div class="form-group mb-3">
+                <label>Email Address :</label>
+                <input type="email" name="txtEmailAddress" class="form-control">
+            </div>
+            <hr>
+            <div class="form-group mb-3">
+                <button type="submit" class="btn btn-primary col-12">
+                    Register
+                </button>
+            </div>
+            </hr>
+            <div class="form-group mb-3">
+                <button onClick="window.location.reload();" type="button" class="btn btn-secondary col-12">
+                    Cancel
+                </button>
+            </div>
+        </form>
+    </div>

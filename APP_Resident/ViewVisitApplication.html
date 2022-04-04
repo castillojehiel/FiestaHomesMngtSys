@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+    <style>
+    </style>
+    <div id="viewVisitApplication" class="col">
+
+        <div class="row">
+            <input type="hidden" id="txtVLID" />
+            <div class="col-1">
+                <button id="btnViewAllVisitorsBackToHome" class="btn btn-secondary"><i class="fas fa-angle-left"></i></button>
+            </div>
+            <div class="col-11">
+                <h4>View Visit Application</h4>
+            </div>
+        </div>
+        <hr>
+        <div class="row">
+            <label>Visitor Name : </label>
+            <h6 id="lblVisitorName"></h6>
+        </div>
+        <br>
+        <div class="row">
+            <label>Reason for Visit : </label>
+            <textarea id="lblVisitDetails" readonly class="form-control"></textarea>
+        </div>
+
+        <br>
+        <div class="row">
+            <button class="btn btn-primary" id="btnApproveVisitApplication">
+                <span class="fas fa-check"></span>
+                Approve Visitation
+            </button>
+            <button class="btn btn-secondary" id="btnRejectVisitation">
+                <span class="fas fa-times"></span>
+                Reject Visitation
+            </button>
+        </div>
+
+    </div>
+</html>

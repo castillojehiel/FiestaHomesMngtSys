@@ -1,0 +1,167 @@
+
+   
+<html>
+<head>
+<style>
+    /* #qr-shaded-region{
+        border-width: 9.3vw 10vw !important;
+    } */
+</style>
+<body>
+    <div id="qr-reader" style="width: 90vw; height: 80vh; margin:0 auto !important"></div>
+    <div id="qr-reader-results"></div>
+    <div id="divVisitorForm" class="col"
+     style="background: white; height: 100%; display: none; position: fixed; top: 0;">
+        <div class="col">
+            <div class="row">
+                <form id="frmVisitorForm">
+                    <div class="form-group m-3">
+                        <div class="row">
+                            <label>Visitor Name:</label>
+                            <input type="text" name="txtVisitorName" readonly class="form-control" />
+                            <input type="hidden" name="txtVisitorID" readonly class="form-control" />
+                            <input type="hidden" name="txtVisitorQRCode" readonly class="form-control" />
+                        </div>
+                    </div>
+                    <div class="form-group m-3">
+                        <div class="row">
+                            <label>House Hold to Visit:</label>
+                            <input type="text" name="txtHouseHold" readonly class="form-control" />
+                            <input type="hidden" name="txtHouseHoldID" readonly class="form-control" />
+                            <button id="btnSearchHouseHoldForVisit" type="button" class="btn btn-primary">
+                                <span class="fas fa-search"></span>
+                                Search Household
+                            </button>
+                        </div>
+                    </div>
+                    <div class="form-group m-3">
+                        <div class="row">
+                            <label>Reason for Visit:</label>
+                            <textarea name="txtReasonForVisit" class="form-control" style="min-height: 200px;"></textarea>
+                        </div>
+                    </div>
+                    <div class="form-group m-3">
+                        <div class="row">
+                            <button type="submit" class="btn btn-primary">
+                                Save Visit Application
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</body>
+<script src="js/html5-qrcode.min.js"></script>
+<script>
+    $(document).ready( function(){
+        let beep = new Audio("audio/beep.mp3");
+
+        function InsertNewVisitorGateLog(QRCode){
+            
+            let data = {QRCode : QRCode};
+            $.post(url, data, function(res){
+                if(res.result){
+                    alert("Gate pass successfully saved.");
+                    loadHomepage();
+                }
+                else{
+                    alert("Transaction failed.");
+                }
+            }, 'json')
+            .fail( function(xhr, status, message){
+                alert("Error has occured. " + message);
+            });
+        }
+
+        function docReady(fn) {
+            // see if DOM is already available
+            if (document.readyState === "complete"
+                || document.readyState === "interactive") {
+                // call on next available tick
+                setTimeout(fn, 1);
+            } else {
+                document.addEventListener("DOMContentLoaded", fn);
+            }
+        }
+
+        docReady(function () {
+            var resultContainer = document.getElementById('qr-reader-results');
+            var lastResult, countResults = 0;
+            let lastScanDateTime = new Date();
+            function onScanSuccess(decodedText, decodedResult) {
+
+                if(decodedText != lastResult || (Math.abs(lastScanDateTime.getTime() - (new Date()).getTime()))/1000 > 2 ){
+                    beep.play();
+                    lastResult = decodedText;
+                    lastScanDateTime = new Date();
+                    //check if resident or visitor
+                    let indicator = decodedText.substring(0,3);
+                    if(indicator == "RES"){
+                        //resident
+                        let url = localStorage.getItem('APIURL_GateScan') + "/API/InsertNewResidentGateLog.php";
+                        let obj = JSON.parse(localStorage.getItem("UserObj"));
+                        let data = {QRCode : decodedText, ScannedByUser : obj.UserID};
+
+                        $.post(url, data, function(res){
+                            if(res.result){
+                                alert("Gate pass successfully saved.");
+                            }
+                            else{
+                                alert("Transaction failed.");
+                            }
+                        }, 'json')
+                        .fail( function(xhr, status, message){
+                            alert("Error has occured. " + message);
+                        });
+                    }
+                    else if(indicator == "VIS"){
+                        //visitor
+                        html5QrcodeScanner.clear();
+                        $("#divVisitorForm").slideDown();    
+                        let url = localStorage.getItem('APIURL_GateScan') + "/API/GetVisitorDetailsByQR.php";
+                        let data = {QRCode : decodedText};
+                        $.post(url, data, function(res){
+                            console.log(res);
+                            let $frm = $("#frmVisitorForm");
+                            $frm.find("input[name=txtVisitorName]").val(res.VisitorCompleteName);
+                            $frm.find("input[name=txtVisitorID]").val(res.DataCenterID);
+                            $frm.find("input[name=txtVisitorQRCode]").val(decodedText);
+                        }, 'json')    
+                        .fail( function(xhr, status, message){
+                            alert("Error has occured. " + message);
+                        });             
+                    }
+                    else if(indicator == "VEH"){
+                        let url = localStorage.getItem('APIURL_GateScan') + "/API/InsertNewVehicleGateLog.php";
+                        let obj = JSON.parse(localStorage.getItem("UserObj"));
+                        let data = {QRCode : decodedText, ScannedByUser : obj.UserID};
+                        $.post(url, data, function(res){
+                            if(res.result){
+                                alert("Gate pass successfully saved.");
+                            }
+                            else{
+                                alert("Transaction failed." + res.message);
+                            }
+                        }, 'json')
+                        .fail( function(xhr, status, message){
+                            alert("Error has occured. " + message);
+                        });   
+                    }
+                    else
+                    {
+                        alert("Invalid QR Codee")
+                    }
+                }
+            }
+
+            var html5QrcodeScanner = new Html5QrcodeScanner(
+                "qr-reader", { fps: 10, qrbox: 250 });
+            html5QrcodeScanner.render(onScanSuccess);
+            $("#qr-reader__scan_region video").width("100%");
+
+        });
+    })
+</script>
+</head>
+</html>

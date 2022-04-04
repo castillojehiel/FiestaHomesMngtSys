@@ -1,0 +1,48 @@
+<?php
+    require '../Connection.php';
+    $DataCenterID = $_POST["txtDCID"];
+    $FirstName = $_POST["txtFirstName"];
+    $MiddleName = $_POST["txtMiddleName"];
+    $LastName = $_POST["txtLastName"];
+    $Suffix = $_POST["txtSuffix"];
+    $Birthdate = $_POST["txtBirthdate"];
+    $ContactNo = $_POST["txtContactNo"];
+    $EmailAddress = $_POST["txtEmailAddress"];
+    $Gender = $_POST["txtGender"];
+    $Username = $_POST["txtUsername"];
+    $Password = $_POST["txtUserPassword"];
+    $CreatedBy = 1;
+	if(isset($_SESSION["UserID"])){
+		$CreatedBy = $_SESSION["UserID"];
+    }
+
+    $query = "INSERT INTO useraccount (DataCenterID,FirstName, MiddleName, LastName, Suffix, Gender, Birthdate, 
+                                        ContactNo, EmailAddress, isActive, CreatedBy, CreatedDateTime, Username, Userpass)
+        VALUES(
+                '$DataCenterID',
+                '$FirstName',
+                '$MiddleName',
+                '$LastName',
+                '$Suffix',
+                '$Gender',
+                '$Birthdate',
+                '$ContactNo',
+                '$EmailAddress',
+                1,
+                '$CreatedBy',
+                CURRENT_TIMESTAMP(),
+                '$Username',
+                '$Password'
+        )";
+
+    $sql = $conn -> query($query);
+    $id = $conn -> insert_id;
+    //build qr code
+    $qrCode = "STAFF" . sprintf('%08d', $id);
+
+    $query = "UPDATE useraccount SET QRCode = '$qrCode' WHERE UserID = '$id'";
+    $sql2 = $conn -> query($query);
+
+    echo json_encode(array("result" => $sql));
+
+	$conn -> close();

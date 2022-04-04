@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+    <style>
+    </style>
+    <div class="col">
+        <div class="row">
+            <div class="col-1">
+                <button id="btnViewAllVisitorsBackToHome" class="btn btn-secondary"><i class="fas fa-angle-left"></i></button>
+            </div>
+            <div class="col-11">
+                <h4>Visitors List</h4>
+            </div>
+        </div>
+        <hr>
+        <div class="accordion" id="accordionExample">
+            <div class="card">
+                <div class="card-header" id="headingOne">
+                <h2 class="mb-0">
+                    <button class="btn btn-link btnCollapseTrigger" type="button" data-toggle="collapse" data-target="#collapseOne" 
+                        aria-expanded="true" aria-controls="collapseOne" style="font-size:17px !important">
+                        <span class="fas fa-users"> </span>
+                        Whitelisted Visitors
+                    </button>
+                </h2>
+                </div>
+
+                <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordionExample">
+                    <div class="card-body">
+                        <p>List of all visitors automatically accepted for visitation.</p>
+                        <ul id="visitorsListWhitelisted" class="list-group">
+                            
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-header" id="headingTwo">
+                <h2 class="mb-0">
+                    <button class="btn btn-link collapsed btnCollapseTrigger" type="button" data-toggle="collapse"
+                        data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo" style="font-size:17px !important">
+                        <span class="fas fa-users-slash"> </span>
+                        Blacklisted Visitors
+                    </button>
+                </h2>
+                </div>
+                <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionExample">
+                    <div class="card-body">
+                        <p>List of all visitors blocked from visitation.</p>
+                        <ul id="visitorsListBlackListed" class="list-group">
+                            
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-header" id="headingThree">
+                <h2 class="mb-0">
+                    <button class="btn btn-link collapsed btnCollapseTrigger" type="button" data-toggle="collapse" 
+                        data-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree" style="font-size:17px !important">
+                        <span class="fas fa-users"> </span>
+                        Other Visitors
+                    </button>
+                </h2>
+                </div>
+                <div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#accordionExample">
+                    <div class="card-body">
+                        <p>List of all other visitors of the household</p>
+                        <ul id="visitorsListOthers" class="list-group">
+                            
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+<script>
+    $(document).ready( function(){
+        
+    }) 
+</script>
+</html>

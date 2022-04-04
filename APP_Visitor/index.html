@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+    <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css" />
+    <link rel="stylesheet" type="text/css" href="fontawesome/css/all.min.css" />
+    <link rel="stylesheet" type="text/css" href="css/custom.css" />
+    
+    <script src="js/jquery_3.6.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/jquery.qrcode.min.js"></script>
+    <script src="js/printThis.js"></script>
+    <script src="js/reImg.js"></script>
+
+
+    <style>
+        .modal{
+            z-index: 100000000000 !important;
+            background: rgba(0,0,0,.5);
+        }
+        #main{
+            height: calc(100% - 40px);
+            position: fixed;
+            top: 0;
+            width: 100%;
+            overflow: auto;
+            padding: 5px 0;
+        }
+        #navMain .nav-item{
+            border-radius: 0px;
+        }
+        #loginForm{
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 100%;
+            width: 100%;
+            background: white;
+            z-index: 2001;
+            overflow: auto;
+        }
+        #mainCard{
+            height: auto;
+            top:2vh;
+            margin: 100px 0 0 0;
+            background : rgba(255,255,255,0.7);
+            display:block;
+            padding:20px;
+            text-align:center;
+        }
+
+        .btnVisitorShowOptions{
+            padding: 0 !important;
+            width: 15px !important;
+            height: 30px !important;
+            float: right !important;
+            text-align: center !important
+        }
+    </style>
+
+    <div id="loginForm">
+        <div id="mainCard" >
+            <img src="Images/FiestaHomesLogo.png" style="width:50%; margin:0 auto; display:block"/>
+            <h2>Fiesta Homes Management System</h2>
+            <h6><i>Visitor App</i></h6>
+            <hr>
+            <form id="frmLogin" style="width:80%; margin:auto" >
+                <div class="mb-3">
+                    <label for="" style="float:left">Username:</label>
+                    <input type="text" class="form-control" name="txtUsername" required  >
+                </div>
+                <div class="mb-3">
+                    <label for="" style="float:left">Password:</label>
+                    <input type="password" class="form-control" name="txtPassword" required  >
+                </div>
+                <div class="mb-3">
+                    <button class="btn btn-primary" style="width: 200px;">
+                        <span class="fas fa-login"></span>
+                        Login
+                    </button>
+                </div>
+                
+            </form>
+            
+        </div>
+        <div class="row">
+            <button id="btnRegisterNew" type="button" class="btn btn-link">
+                New User? Sign up...
+            </button>
+        </div>
+        <hr style="margin: 10px 20px">
+        <div class="row">
+            <button id="btnChangeConnection" type="button" class="btn btn-link">
+                Change Connection
+            </button>
+        </div>
+    </div>
+
+    <div id="main" class="row" style="padding: 10px 0 0 0 ;">
+
+    </div>
+    <nav id="navMain" class="nav nav-pills fixed-bottom nav-fill">
+        <a id="navItemHome" class="nav-item nav-link active navMainItem" href="#">
+            <span class="fas fa-home"></span>
+        </a>
+        <a id="navItemProfile" class="nav-item nav-link navMainItem" href="#">
+            <span class="fas fa-user"></span>
+        </a>
+        <a id="navItemQR" class="nav-item nav-link navMainItem" href="#">
+            <span class="fas fa-qrcode"></span>
+        </a>
+      </nav>
+
+<!--change connection dialog -->
+<div class="modal fade" id="mdlChangeConnection" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+	<div class="modal-dialog modal-lg">
+		<div class="modal-content">
+			<div class="modal-header">
+			<h5 class="modal-title" id="exampleModalLabel">API Connection</h5>
+			<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+			</div>
+			<div class="modal-body">
+                <form id="frmChangeConnection">
+                    <div class="mb-3">
+                        <label>URL : </label>
+                        <input type="text" name="txtURL" class="form-control" required />
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="submit" form="frmChangeConnection" class="btn btn-primary">Save changes</button>
+            </div>
+		</div>
+	</div>
+</div>
+<!-- End change connection dialog -->
+<div class="modal fade" id="mdlChangeCredentials" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+	<div class="modal-dialog modal-lg">
+		<div class="modal-content">
+			<div class="modal-header">
+			<h5 class="modal-title" id="exampleModalLabel">Change Credentials</h5>
+			<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+			</div>
+			<div class="modal-body" style="max-height: 400px !important;">
+                <form id="frmChangeUserCredentials">
+                    <div class="form-group m-3">
+                        <div class="row">
+                            <label>Password:</label>
+                            <input type="password" name="txtUserPass" class="form-control" required />
+                        </div>
+                        <div class="row">
+                            <label>Confirm Password:</label>
+                            <input type="password" name="txtUserPassConfirm" class="form-control" required />
+                        </div>
+                    </div>
+                </form>
+                
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="submit" form="frmChangeUserCredentials" class="btn btn-primary">Save changes</button>
+            </div>
+		</div>
+	</div>
+</div>
+
+<script>
+    $(document).ready( function(){
+        let currentNavItemID = "";
+        let UserObj = {};
+        /////////////////
+
+        $(document).on("submit", "#frmRegisterNewUser", function(event){
+            event.preventDefault();
+            let data = $(this).serialize();
+            let url = localStorage.getItem('APIURL_Visitor') + "/API/RegisterNewUser.php";
+            $.post(url, data, function(res){
+                if(res.result){
+                    alert("You have been successfully registered. Please login with registered email as username and first name as password.");
+                    window.location.reload();
+                }
+                else{
+                    alert("Failed to register new user. Please try again.")
+                }
+            }, 'json')
+            .fail( function(xhr, status, message){
+                alert("Error has occured. " + message);
+            });
+        });
+
+        $("#btnRegisterNew").click( function(){
+            $.get("userRegistration.html", function(data){
+                $("body").html(data);
+            });
+        })
+
+        $("#main").on("submit", "#frmSearchVisitLogs", function(event){
+            event.preventDefault();
+            loadRecentVisitations();
+        });
+
+        $("#main").on('click', '#btnDownloadQR', function(){
+			// ReImg.fromCanvas(document.getElementById('cvsQR')).downloadPng();
+            let $img = document.getElementById('cvsQR').toDataURL();
+            let url = localStorage.getItem('APIURL_Visitor') + "/API/qrrender.php";
+            console.log(url);
+            let data = {QRCode : $img, QRCodeText : $("#qrcodeString").html()};
+            $.post(url, data, function(res){
+                const link = document.createElement("a");
+                link.href = res.URL;
+                link.download = res.filename;
+                link.click();
+            }, 'json')
+            .fail( function(xhr, status, message){
+                alert("Error has occured. " + message);
+            });
+		});
+
+        $("#main").on('click', "#btnLogout", function(){
+            let confirmres = confirm("Are you sure you want to logout account?");
+            if(confirmres){
+                $("#loginForm").slideDown();
+            }
+        });
+
+        $("#frmChangeUserCredentials").submit( function(event){
+            event.preventDefault();
+            let pass = $("#frmChangeUserCredentials").find("input[name=txtUserPass]").val();
+            let passConfirm = $("#frmChangeUserCredentials").find("input[name=txtUserPassConfirm]").val();
+            if(pass != passConfirm){
+                alert("Passwords do not match.");
+                return;
+            }
+
+            let url = localStorage.getItem('APIURL_Visitor') + "/API/ChangeUserCredentials.php";
+            let data = $(this).serializeArray();
+            let obj = JSON.parse(localStorage.getItem("UserObj_Visitor"));
+            data.push({name : "DataCenterID", value : obj.DataCenterID});
+            $.post(url, data, function(res){
+                if(res.result){
+                    alert("Credentials successfully updated.");
+                    $(".modal").modal('hide');
+                    location.reload();
+                }
+                else{
+                    alert("Failed to update credentials. " + res.message)
+                }
+            }, 'json')
+            .fail( function(xhr, status, message){
+				alert("Error has occured. " + message);
+			});
+        });
+
+        $("#main").on('click', "#btnChangePassword", function(){
+            let obj = JSON.parse(localStorage.getItem("UserObj_Visitor"));
+            $("#frmChangeUserCredentials").trigger("reset");
+            $("#frmChangeUserCredentials").find("input[name=txtUserName]").val(obj.Username);
+            $("#mdlChangeCredentials").modal("show");
+        });
+
+
+        $(".navMainItem").click( function(){
+            let id = $(this).prop("id");
+            if(id != currentNavItemID && id == "navItemHome"){
+                currentNavItemID = id;
+                loadHomepage();
+            }
+            else if(id != currentNavItemID && id == "navItemQR"){
+                currentNavItemID = id;
+                loadQRCodePage();
+            }
+            else if(id != currentNavItemID && id == "navItemReports"){
+                currentNavItemID = id;
+                loadReportsPage();
+            }
+            else if(id != currentNavItemID && id == "navItemProfile"){
+                currentNavItemID = id;
+                loadUserPage();
+            }
+            $(".navMainItem").removeClass('active');
+            $(this).addClass('active');
+        });
+
+        $("#frmLogin").submit( function(event){
+            event.preventDefault();
+            let url = localStorage.getItem('APIURL_Visitor') + "/API/Userlogin.php";
+            let data = $(this).serialize();
+            $.post(url, data, function(res){
+                if(res != undefined){
+                    UserObj = res;
+                    localStorage.setItem("UserObj_Visitor", JSON.stringify(res));
+                    $("#loginForm").slideUp();
+                    loadHomepage();
+                }
+                else{
+                    alert("User not found or mismatched credentials.");
+                }
+            }, 'json')
+            .fail( function(xhr, status, message){
+                alert("Error has occured. " + message);
+            });
+        });
+
+        $("#frmChangeConnection").submit( function(event){
+            event.preventDefault();
+            localStorage.setItem("APIURL_Visitor", $("#frmChangeConnection input[name=txtURL]").val());
+            $(".modal").modal('hide');
+        });
+        $("#btnChangeConnection").click( function(){
+            $("#frmChangeConnection input[name=txtURL]").val(localStorage.getItem("APIURL_Visitor"))
+            $("#mdlChangeConnection").modal('show');
+        });
+        
+        function loadUserPage(){
+            $.get("userpage.html", function(data){
+                $("#main").html(data);
+                let obj = JSON.parse(localStorage.getItem("UserObj_Visitor"));
+                console.log(obj);
+                let $frm = $("#frmUserDetailsPage");
+                $frm.find("input[name=txtUserCompleteName]").val(obj.VisitorName);
+                $frm.find("input[name=txtGender]").val(obj.Gender);
+                $frm.find("input[name=txtBirthdate]").val(obj.BirthDate);
+                $frm.find("input[name=txtContactNo]").val(obj.ContactNo);
+                $frm.find("input[name=txtEmailAddress]").val(obj.EmailAddress);
+                $frm.find("input[name=txtUsername]").val(obj.Username);
+                $frm.find("input[name=txtPassword]").val(obj.Userpass);
+            })
+        }
+
+        function loadHomepage(){
+            $.get("homepage.html", function(data){
+                $("#main").html(data);
+                $("#mainGreetUsername").html(UserObj.FirstName);
+                var date = new Date();
+                var currentDate = date.toISOString().substring(0,10);
+                console.log(currentDate);
+                $("#frmSearchVisitLogs input[name=txtDateFrom]").val(currentDate);
+                $("#frmSearchVisitLogs input[name=txtDateTo]").val(currentDate);
+                loadVisitedHouseHolds();
+                setTimeout(() => {
+                    loadForApprovalVisitations();
+                    loadRecentVisitations();
+                }, 500);
+            });
+        }
+
+        function loadQRCodePage(){
+            $.get("QRCode.html", function(data){
+                
+                $("#main").html(data);
+                $("#qrcode").qrcode({
+						text : UserObj.QRCode,
+						width : $("#qrcode").width(),
+						height : $("#qrcode").width()
+					});
+                $("#qrcodeString").html(UserObj.QRCode);
+                $("#qrcode").find("canvas").attr("id", "cvsQR");
+            });
+        }
+
+        function loadForApprovalVisitations(){
+            let obj = JSON.parse(localStorage.getItem("UserObj_Visitor"));
+            let url = localStorage.getItem('APIURL_Visitor') + '/API/GetForApprovalVisitApplications.php';
+            $.get(url, {ID: obj.DataCenterID},  function(res){
+                let $list = $("#visitForApproval");
+                $list.html("");
+                $.each(res, function(index, value){
+                    $list.append(`  <li id="`+ value.VLID +`" class="list-group-item">
+                                        <div class="row">
+                                            <p>HouseHold : <strong>`+ value.HouseHoldName +`</strong></p>
+                                        </div>
+                                        <div class="row">
+                                            <p class="col-6 m-0">Request Date : `+ value.RequestDateTime +`</p>
+                                            |
+                                            <p class="col-5 m-0">Status : `+ value.VisitStatus +`</p>
+                                        </div>
+                                    </li>`)
+                });
+                if(res.length == 0){
+                    $list.html("No Records Found");
+                }
+            }, 'json');
+        }
+
+        function loadVisitedHouseHolds(){
+            let obj = JSON.parse(localStorage.getItem("UserObj_Visitor"));
+            let url = localStorage.getItem('APIURL_Visitor') + '/API/GetVisitedHouseHolds.php';
+            $.get(url, {ID : obj.DataCenterID}, function(res){
+                $cbo = $(document).find("#frmSearchVisitLogs select[name=cboVisitedHouseHolds]");
+                console.log($cbo);
+                $cbo.html("");
+                $cbo.append(`<option value="0" selected >All</option>`)
+                $.each(res, function(indx, value){
+                    $cbo.append(`<option value="`+ value.HouseHoldID +`" >`+ value.HouseHoldName +`</option>`);
+                });
+            }, 'json');
+        }
+
+        function loadRecentVisitations(){
+            let obj = JSON.parse(localStorage.getItem("UserObj_Visitor"));
+            let DateFrom = $(document).find("#frmSearchVisitLogs input[name=txtDateFrom]").val();
+            let DateTo = $(document).find("#frmSearchVisitLogs input[name=txtDateTo]").val();
+            let HouseHold = $(document).find("#frmSearchVisitLogs select[name=cboVisitedHouseHolds]").val();
+            console.log(DateFrom);
+            let url = localStorage.getItem('APIURL_Visitor') + '/API/GetVisitorLogs.php';
+            let data = {ID: obj.DataCenterID, DateFrom : DateFrom, DateTo : DateTo, HouseHoldID : HouseHold};
+            console.log(data);
+            $.get(url, data, function(res){
+                let $list = $("#visitLogsList");
+                $list.html("");
+                $.each(res, function(index, value){
+                    $list.append(`  <li id="`+ value.VLID +`" class="list-group-item">
+                                        <div class="row">
+                                            <p><strong>HouseHold :`+ value.HouseHoldName +`</strong></p>
+                                        </div>
+                                        <div class="row">
+                                            <p class="col-6 m-0">Request Date :`+ value.RequestDateTime +`</p>
+                                            |
+                                            <p class="col-5 m-0">Status :`+ value.VisitStatus +`</p>
+                                        </div>
+                                    </li>`)
+                });
+                if(res.length == 0){
+                    $list.html("No Records Found");
+                }
+            }, 'json');
+        }
+    
+    });
+</script>

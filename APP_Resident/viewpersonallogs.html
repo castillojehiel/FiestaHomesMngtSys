@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+    <style>
+    </style>
+    <div class="col">
+        <div class="row">
+            <div class="col-1">
+                <button id="btnViewAllHouseHoldVisitorLogsBackToHome" class="btn btn-secondary"><i class="fas fa-angle-left"></i></button>
+            </div>
+            <div class="col-11">
+                <h4>Personal Logs</h4>
+            </div>
+        </div>
+        <hr>
+        <div class="row">
+            <h6>Search</h6>
+        </div>
+        <div class="row">
+            <form id="frmSearchPersonalLogs">
+                <div class="row mb-3">
+                    <input type="date" name="txtDateFrom" class="form-control" required />
+                </div>
+                <div class="row mb-3">
+                    <input type="date" name="txtDateTo" class="form-control" required />
+                </div>
+                <div class="row mb-3">
+                    <button type="submit" class="btn btn-primary">
+                        <span class="fas fa-search"></span>
+                        Search
+                    </button>
+                </div>
+            </form>
+        </div>
+        <hr>
+        <div class="row">
+            <ul id="listPersonalLogs" class="list-group">
+                <!-- <li class="list-group-item card mb-1">
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="row">
+                                Date of Log : <strong></strong>
+                            </div>
+                        </div>
+                    </div>
+                </li> -->
+            </ul>
+        </div>
+    </div>
+</html>

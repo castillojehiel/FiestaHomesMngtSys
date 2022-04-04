@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+    <style>
+    </style>
+    <div id="addHouseHoldMember" class="col">
+        <div class="row">
+            <div class="col-1">
+                <button id="btnViewAllHouseHoldVisitorLogsBackToHome" class="btn btn-secondary"><i class="fas fa-angle-left"></i></button>
+            </div>
+            <div class="col-11">
+                <h4>Add Household Member</h4>
+            </div>
+        </div>
+        <hr>
+        <div class="row m-0">
+            <form id="frmNewHouseHoldMember">
+                <div class="form-group mb-3">
+                    <label>First Name :</label>
+                    <input type="text" name="txtFirstName" class="form-control" required />
+                    <input type="hidden" name="txtCreatedBy" />
+                    <input type="hidden" name="txtHouseHoldID" />
+                </div>
+                <div class="form-group mb-3">
+                    <label>Middle Name :</label>
+                    <input type="text" name="txtMiddleName" class="form-control" />
+                </div>
+                <div class="form-group mb-3">
+                    <label>Last Name :</label>
+                    <input type="text" name="txtLastName" class="form-control" required />
+                </div>
+                <div class="form-group mb-3">
+                    <label>Suffix :</label>
+                    <input type="text" name="txtSuffix" class="form-control" />
+                </div>
+                <div class="form-group mb-3">
+                    <label>BirthDate :</label>
+                    <input type="date" name="txtBirthdate" class="form-control" required/>
+                </div>
+                <div class="form-group mb-3">
+                    <label>Gender :</label>
+                    <div class="row">
+                        <div class="col-4">
+                            <input type="radio" name="chkGender" value="Male" checked/>
+                            <label>Male</label>
+                        </div>
+                        <div class="col-4">
+                            <input type="radio" name="chkGender" value="Female" />
+                            <label>Female</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group mb-3">
+                    <label>Contact No :</label>
+                    <input type="text" name="txtContactNo" class="form-control" />
+                </div>
+                <div class="form-group mb-3">
+                    <label>Email Address :</label>
+                    <input type="email" name="txtEmailAddress" class="form-control" />
+                </div>
+                <hr>
+                <div class="form-group mb-3">
+                    <button type="submit" class="btn btn-primary col-12">
+                        Submit
+                    </button>
+                </div>
+            </form>
+        </div>
+
+    </div>
+</html>
