@@ -11,7 +11,7 @@
 		<div class="col-2">
 			<ul class="nav flex-column">
 				<li class="nav-item maintenanceItem" id="maintenanceReportTypes">
-					<a class="nav-link active " href="#">Report Types</a>
+					<a class="nav-link active " href="#">Complaint Types</a>
 				</li>
 				<li class="nav-item maintenanceItem" id="maintenanceAnnouncementTypes">
 					<a class="nav-link " href="#">Announcement Types</a>
@@ -30,7 +30,7 @@
 	<div class="modal-dialog modal-lg">
 		<div class="modal-content">
 			<div class="modal-header">
-			<h5 class="modal-title" id="exampleModalLabel">New Report Type</h5>
+			<h5 class="modal-title" id="exampleModalLabel">New Complaint Type</h5>
 			<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 			</div>
 			<div class="modal-body">
@@ -67,7 +67,7 @@
 	<div class="modal-dialog modal-lg">
 		<div class="modal-content">
 			<div class="modal-header">
-			<h5 class="modal-title" id="exampleModalLabel">New Report Type</h5>
+			<h5 class="modal-title" id="exampleModalLabel">Edit Complaint Type</h5>
 			<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 			</div>
 			<div class="modal-body">

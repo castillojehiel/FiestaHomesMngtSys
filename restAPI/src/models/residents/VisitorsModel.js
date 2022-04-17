@@ -71,9 +71,9 @@ Visitor.GetHouseHoldVisitors = (HouseHoldID, result) => {
                 LEFT JOIN visitorblacklist vb
                     ON vl.VisitorID = vb.VisitorID
                 LEFT JOIN useraccount cb
-                    ON ann.CreatedBy = cb.UserID
+                    ON dc.CreatedBy = cb.UserID
                 LEFT JOIN useraccount ub
-                    ON ann.UpdatedBy = ub.UserID
+                    ON dc.UpdatedBy = ub.UserID
                 WHERE vl.HouseHoldID = '${HouseHoldID}'
                         AND vl.VisitorID > 0
                 GROUP BY vl.VisitorID 

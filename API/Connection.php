@@ -18,3 +18,7 @@
 	    die("Connection failed: " . $conn->connect_error);
 	    header("Location:../../index.php");
 	} 
+
+	if (session_status() === PHP_SESSION_NONE) {
+		session_start();
+	}

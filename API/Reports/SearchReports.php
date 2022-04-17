@@ -1,6 +1,8 @@
 <?php
     require '../Connection.php';
     $keyword = $_POST["txtSearch"];
+    $types = $_POST["cboReportTypes"];
+    $status = $_POST["cboStatus"];
 
     $query = "SELECT
                     rr.ReportID, 
@@ -47,6 +49,8 @@
                             OR
                             CONCAT(cb.FirstName, ' ', cb.MiddleName, ' ', cb.LastName) LIKE '%$keyword%'
                         )
+                    AND rr.ReportTypeID = (CASE WHEN '$types' = 0  THEN rr.ReportTypeID ELSE '$types' END)
+                    AND UPPER(rr.ReportStatus) = (CASE WHEN UPPER('$status') = 'ALL' THEN UPPER(rr.ReportStatus) ELSE UPPER('$status') END)
                 ";
     $sql = $conn -> query($query);
     $data = $sql -> fetch_all(MYSQLI_ASSOC);

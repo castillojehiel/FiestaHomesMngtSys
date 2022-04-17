@@ -11,13 +11,14 @@
     $Gender = $_POST["txtGender"];
     $Username = $_POST["txtUsername"];
     $Password = $_POST["txtUserPassword"];
-    $CreatedBy = 1;
+    $Position = $_POST["txtPosition"];
+    $CreatedBy = 3;
 	if(isset($_SESSION["UserID"])){
 		$CreatedBy = $_SESSION["UserID"];
     }
 
     $query = "INSERT INTO useraccount (DataCenterID,FirstName, MiddleName, LastName, Suffix, Gender, Birthdate, 
-                                        ContactNo, EmailAddress, isActive, CreatedBy, CreatedDateTime, Username, Userpass)
+                                        ContactNo, EmailAddress, isActive, CreatedBy, CreatedDateTime, Username, Userpass, UserPosition)
         VALUES(
                 '$DataCenterID',
                 '$FirstName',
@@ -32,7 +33,8 @@
                 '$CreatedBy',
                 CURRENT_TIMESTAMP(),
                 '$Username',
-                '$Password'
+                '$Password',
+                '$Position'
         )";
 
     $sql = $conn -> query($query);

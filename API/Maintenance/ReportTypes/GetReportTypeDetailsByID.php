@@ -3,9 +3,9 @@
     $ID = $_GET["ID"];
 
     $query = "SELECT 
-                    ReportTypeID,
-                    Description,
-                    isActive, 
+                    ann.ReportTypeID,
+                    ann.Description,
+                    ann.isActive, 
                     CONCAT(cb.FirstName, ' ', cb.MiddleName, ' ', cb.LastName) as CreatedBy,
                     ann.CreatedDateTime,
                     CONCAT(ub.FirstName, ' ', ub.MiddleName, ' ', ub.LastName) as UpdatedBy,

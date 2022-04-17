@@ -41,8 +41,31 @@
                         ELSE
                             'VEHICLE'
                     END as TypeOfDetail,
-                    CONCAT(ua.FirstName, ' ', ua.MiddleName, ' ', ua.LastName) as ScannedBy
-
+                    CONCAT(ua.FirstName, ' ', ua.MiddleName, ' ', ua.LastName) as ScannedBy,
+                    CASE 
+                        WHEN gpl.isVehicleLog = 0 AND dc.isResident = 1 THEN
+                            dcHH.HouseNo
+                        WHEN gpl.isVehicleLog = 0 AND dc.isResident = 0 THEN
+                            visitHH.HouseNo
+                        ELSE
+                            vHH.HouseNo
+                    END as HouseNo,
+                    CASE 
+                        WHEN gpl.isVehicleLog = 0 AND dc.isResident = 1 THEN
+                            dcHH.Street
+                        WHEN gpl.isVehicleLog = 0 AND dc.isResident = 0 THEN
+                            visitHH.Street
+                        ELSE
+                            vHH.Street
+                    END as Street,
+                    CASE 
+                        WHEN gpl.isVehicleLog = 0 AND dc.isResident = 1 THEN
+                            dcHH.BlockNo
+                        WHEN gpl.isVehicleLog = 0 AND dc.isResident = 0 THEN
+                            visitHH.BlockNo
+                        ELSE
+                            vHH.BlockNo
+                    END as BlockNo
                 FROM gatepasslogs gpl
                 LEFT JOIN datacenter dc
                     ON gpl.DataCenterID = dc.DataCenterID

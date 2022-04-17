@@ -34,7 +34,7 @@
 				<a href="households.php"> <i class="fas fa-house-user"></i> Households</a>
 			</li>
 			<li>
-				<a href="reports.php"> <i class="fas fa-flag"></i> Reports</a>
+				<a href="reports.php"> <i class="fas fa-flag"></i> Complaints</a>
 			</li>
 			<li>
 				<a href="announcements.php"> <i class="fas fa-comments"></i> Announcements</a>

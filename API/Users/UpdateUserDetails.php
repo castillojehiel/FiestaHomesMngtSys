@@ -12,6 +12,7 @@
     $Gender = $_POST["txtGender"];
     $Username = $_POST["txtUsername"];
     $Password = $_POST["txtUserPassword"];
+    $Position = $_POST["txtPosition"];
     $UpdatedBy = 1;
 	if(isset($_SESSION["UserID"])){
 		$UpdatedBy = $_SESSION["UserID"];
@@ -36,7 +37,8 @@
                     UpdatedBy = '$UpdatedBy',  
                     UpdatedDateTime = CURRENT_TIMESTAMP,
                     Username = '$Username',
-                    Userpass = '$Password'
+                    Userpass = '$Password',
+                    UserPosition = '$Position'
                 WHERE UserID = '$ID'
             ";
     $sql = $conn -> query($query);

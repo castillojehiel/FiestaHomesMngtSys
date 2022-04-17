@@ -1,5 +1,5 @@
 <div class="mainContent" style="width:calc(100vw - 500px) !important">
-	<h4 class="page-title"></i>Report Types</h4>
+	<h4 class="page-title"></i>Complaint Types</h4>
 	<hr/>
 
     <div class="row">

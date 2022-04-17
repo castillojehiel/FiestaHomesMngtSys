@@ -7,20 +7,22 @@
     $HouseHoldNo = $conn -> real_escape_string($_POST["txtHouseNo"]);
     $Street = $conn -> real_escape_string($_POST["txtStreet"]);
     $HouseHoldName = $conn -> real_escape_string($_POST["txtHouseHoldName"]);
+    $BlockNo = $conn -> real_escape_string($_POST["txtBlockNo"]);
     $isActive = true;
     if(isset($POST["chkIsActive"])){
 		$isActive = $POST["chkIsActive"];
 	}
     $HouseHoldMembers = json_decode($_POST["HouseHoldMembers"]);
 
-    $query = "INSERT INTO households(HouseHoldName, Street, HouseNo, isActive, CreatedBy, CreatedDateTime)
+    $query = "INSERT INTO households(HouseHoldName, Street, HouseNo, isActive, CreatedBy, CreatedDateTime, BlockNo)
                 VALUES(
                     '$HouseHoldName',
                     '$Street',
                     '$HouseHoldNo',
                     '$isActive',
                     '$CreatedBy',
-                    CURRENT_TIMESTAMP()
+                    CURRENT_TIMESTAMP(),
+                    '$BlockNo'
                 )
                 ";
     $sql = $conn -> query($query);

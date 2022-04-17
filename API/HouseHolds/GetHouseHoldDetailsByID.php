@@ -8,6 +8,7 @@
                 hh.HouseNo, 
                 hh.Street, 
                 hh.isActive, 
+                hh.BlockNo,
                 CASE 
                     WHEN hh.isActive = 1 THEN 'Active'
                     ELSE 'Inactive'

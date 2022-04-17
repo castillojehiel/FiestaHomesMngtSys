@@ -47,6 +47,7 @@
 				<th width="150px">Action</th>
                 <th>UserName</th>
 				<th>Name</th>
+				<th>Position</th>
 				<th>Gender</th>
 				<th>Birthdate</th>
 				<th>Contact No</th>
@@ -261,6 +262,16 @@
 							</div>
 						</div>
 					</div>
+					<div class="form-group m-3">
+						<div class="row">
+							<div class="col-lg-2">
+								<label>Position:</label>
+							</div>
+							<div class="col-lg-10">
+								<input type="text" name="txtPosition" class="form-control" />
+							</div>
+						</div>
+					</div>
 				</form>
 			</div>
 			<div class="modal-footer">
@@ -393,6 +404,16 @@
 							</div>
 							<div class="col-lg-10">
 								<input type="password" name="txtUserPassword" class="form-control" />
+							</div>
+						</div>
+					</div>
+					<div class="form-group m-3">
+						<div class="row">
+							<div class="col-lg-2">
+								<label>Position:</label>
+							</div>
+							<div class="col-lg-10">
+								<input type="text" name="txtPosition" class="form-control" />
 							</div>
 						</div>
 					</div>
@@ -690,6 +711,7 @@
 					$frm.find("input[name=txtEmailAddress]").val(res.EmailAddress);
 					$frm.find("input[name=txtUsername]").val(res.Username);
 					$frm.find("input[name=txtUserPassword]").val(res.Userpass);
+					$frm.find("input[name=txtPosition]").val(res.UserPosition);
 					$frm.find("input[name=txtGender]").filter('[value='+res.Gender+']').prop('checked', true);
 
 					$("#mdlEditUserAccount").modal('show');
@@ -750,6 +772,7 @@
 							</td>
 							<td>`+ value.Username +`</td>
 							<td>`+ value.UserCompleteName +`</td>
+							<td>`+ value.UserPosition +`</td>
 							<td>`+ value.Gender +`</td>
 							<td>`+ value.BirthDate+`</td>
 							<td>`+ value.ContactNo +`</td>

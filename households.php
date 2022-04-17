@@ -39,7 +39,9 @@
 				<th width="150px">Action</th>
 				<th>Description</th>
 				<th>HouseNo</th>
+				<th>No. of Members</th>
 				<th>Street</th>
+				<th>Block No</th>
 				<th>Created By</th>
 				<th>Created Date Time</th>
 				<th>Updated By</th>
@@ -85,6 +87,16 @@
 							</div>
 							<div class="col-lg-10">
 								<input type="text" name="txtStreet" class="form-control" />
+							</div>
+						</div>
+					</div>
+					<div class="form-group m-3">
+						<div class="row">
+							<div class="col-lg-2">
+								<label>Block No:</label>
+							</div>
+							<div class="col-lg-10">
+								<input type="text" name="txtBlockNo" class="form-control" />
 							</div>
 						</div>
 					</div>
@@ -214,6 +226,16 @@
 					<div class="form-group m-3">
 						<div class="row">
 							<div class="col-lg-2">
+								<label>Block No:</label>
+							</div>
+							<div class="col-lg-10">
+								<input type="text" name="txtBlockNo" class="form-control" />
+							</div>
+						</div>
+					</div>
+					<div class="form-group m-3">
+						<div class="row">
+							<div class="col-lg-2">
 								<label>House Hold Name:</label>
 							</div>
 							<div class="col-lg-10">
@@ -331,6 +353,16 @@
 							</div>
 							<div class="col-lg-10">
 								<input type="text" name="txtStreet" class="form-control" readonly />
+							</div>
+						</div>
+					</div>
+					<div class="form-group m-3">
+						<div class="row">
+							<div class="col-lg-2">
+								<label>Block No:</label>
+							</div>
+							<div class="col-lg-10">
+								<input type="text" name="txtBlockNo" class="form-control" readonly />
 							</div>
 						</div>
 					</div>
@@ -641,6 +673,7 @@
 					$frm.find('input[name=txtHouseNo]').val(res.HouseNo);
 					$frm.find('input[name=txtStreet]').val(res.Street);
 					$frm.find('input[name=txtHouseHoldName]').val(res.HouseHoldName);
+					$frm.find('input[name=txtBlockNo]').val(res.BlockNo);
 					$frm.find('input[name=txtID]').val(id);
 					$frm.find('input[name=chkIsActive]').prop('checked', res.isActive);
 					$("#tblResidentSearch tbody").html('');
@@ -691,6 +724,7 @@
 					$frm.find('input[name=txtHouseNo]').val(res.HouseNo);
 					$frm.find('input[name=txtStreet]').val(res.Street);
 					$frm.find('input[name=txtHouseHoldName]').val(res.HouseHoldName);
+					$frm.find('input[name=txtBlockNo]').val(res.BlockNo);
 					$frm.find('input[name=txtID]').val(id);
 					$frm.find('input[name=chkIsActive]').prop('checked', res.isActive);
 					$("#tblResidentSearch tbody").html('');
@@ -1020,7 +1054,9 @@
 							</td>
 							<td>`+ value.HouseHoldName +`</td>
 							<td>`+ value.HouseNo +`</td>
+							<td>`+ value.MembersCount +`</td>
 							<td>`+ value.Street +`</td>
+							<td>`+ value.BlockNo +`</td>
 							<td>` + value.CreatedBy + `</td>
 							<td>` + value.CreatedDateTime + `</td>
 							<td>` + (value.UpdatedBy == undefined ? '' : value.UpdatedBy) + `</td>

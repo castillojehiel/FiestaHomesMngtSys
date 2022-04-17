@@ -46,9 +46,9 @@ GateLogs.GetHouseHoldVisitationForApproval = (HouseHoldID, result) => {
                 LEFT JOIN datacenter dc
                     ON vl.VisitorID = dc.DataCenterID
                 LEFT JOIN useraccount cb
-                    ON ann.CreatedBy = cb.UserID
+                    ON dc.CreatedBy = cb.UserID
                 LEFT JOIN useraccount ub
-                    ON ann.UpdatedBy = ub.UserID
+                    ON dc.UpdatedBy = ub.UserID
                 WHERE   vl.HouseHoldID = '${HouseHoldID}'
                         AND IFNULL(isApproved,0) = 0
                         AND vl.isActive = 1

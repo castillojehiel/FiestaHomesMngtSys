@@ -13,7 +13,7 @@
 
 <div class="mainContent" >
 
-    <h2 class="page-title"><span class="fas fa-flag"> </span> Reports</h2>
+    <h2 class="page-title"><span class="fas fa-flag"> </span> Complaints</h2>
     <hr/>
 
     <div class="row">
@@ -22,7 +22,21 @@
 				<div class="col-lg-1">
 					<label>Search:</label>
 				</div>
-				<div class="col-lg-6">
+				<div class="col-lg-2">
+					<select id="cboReportTypes" name="cboReportTypes" class="form-control">
+
+					</select>
+				</div>
+				<div class="col-lg-2">
+					<select id="cboStatus" name="cboStatus" class="form-control">
+						<option value="All">All</option>
+						<option value="Pending">Pending</option>
+						<option value="Acknowledge">Acknowledge</option>
+						<option value="Resolved">Resolved</option>
+						<option value="Reject">Reject</option>
+					</select>
+				</div>
+				<div class="col-lg-3">
 					<input type="text" name="txtSearch" class="form-control" placeholder="Report No / Reporter Name" />
 				</div>
 				<div class="col-lg-2">
@@ -32,7 +46,7 @@
 					</button>
 				</div>
 				
-				<div class="col-lg-2 offset-lg-1">
+				<div class="col-lg-2s">
 					<button id="btnNew" sty type="button" class="btn btn-success" style="display:none; float:right">
 						<span class="fas fa-plus" ></span>
 						New
@@ -45,11 +59,11 @@
         <table id="tblList" class="table table-condensed table-striped table-bordered">
 			<thead class="thead-dark">
 				<th width="150px">Action</th>
-				<th>Report No</th>
+				<th>Complaint No</th>
 				<th>Type</th>
 				<th>Status</th>
-				<th>Reporter</th>
-				<th>Reported Date</th>
+				<th>Complainant</th>
+				<th>Complaint Date</th>
 			</thead>
 			<tbody>
 				
@@ -69,7 +83,7 @@
 	<div class="modal-dialog modal-xl">
 		<div class="modal-content">
 			<div class="modal-header">
-			<h5 class="modal-title" id="exampleModalLabel">View Report</h5>
+			<h5 class="modal-title" id="exampleModalLabel">View Complaint</h5>
 			<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 			</div>
 			<div class="modal-body">
@@ -77,7 +91,7 @@
 					<div class="form-group m-3">
 						<div class="row">
 							<div class="col-lg-2">
-								<label>Report Type:</label>
+								<label>Complaint Type:</label>
 							</div>
 							<div class="col-lg-4">
 								<input type="text" name="txtReportType" class="form-control" />
@@ -93,13 +107,13 @@
                     <div class="form-group m-3">
 						<div class="row">
 							<div class="col-lg-2">
-								<label>Reported By:</label>
+								<label>Complainant:</label>
 							</div>
 							<div class="col-lg-4">
 								<input type="text" name="txtReportedBy" class="form-control" />
 							</div>
                             <div class="col-lg-2">
-								<label>Report Date/Time:</label>
+								<label>Complaint Date/Time:</label>
 							</div>
 							<div class="col-lg-4">
 								<input type="text" name="txtReportedDateTime" class="form-control" />
@@ -109,7 +123,7 @@
                     <hr>
                     <div class="form-group m-3">
 						<div class="row">
-                            <label>Report Details: </label>
+                            <label>Complaint Details: </label>
                             <textarea name="txtReportDetails" class="form-control" style="min-height:200px; font-size:13px; margin:10px 0 0 0 "></textarea>
 						</div>
 					</div>
@@ -177,7 +191,7 @@
 	<div class="modal-dialog modal-lg">
 		<div class="modal-content">
 			<div class="modal-header">
-			<h5 class="modal-title" id="exampleModalLabel">Update Report Status</h5>
+			<h5 class="modal-title" id="exampleModalLabel">Update Complaint Status</h5>
 			<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 			</div>
 			<div class="modal-body">
@@ -185,7 +199,7 @@
 					<div class="form-group m-3">
 						<div class="row">
 							<div class="col-lg-2">
-								<label>Report Type:</label>
+								<label>Complaint Type:</label>
 							</div>
 							<div class="col-lg-4">
 								<input type="text" name="txtReportType" class="form-control" readonly />
@@ -202,13 +216,13 @@
                     <div class="form-group m-3">
 						<div class="row">
 							<div class="col-lg-2">
-								<label>Reported By:</label>
+								<label>Complainant By:</label>
 							</div>
 							<div class="col-lg-4">
 								<input type="text" name="txtReportedBy" class="form-control" readonly />
 							</div>
                             <div class="col-lg-2">
-								<label>Report Date/Time:</label>
+								<label>Complaint Date/Time:</label>
 							</div>
 							<div class="col-lg-4">
 								<input type="text" name="txtReportedDateTime" class="form-control" readonly />
@@ -218,7 +232,7 @@
                     <hr>
                     <div class="form-group m-3">
 						<div class="row">
-                            <label>Report Details: </label>
+                            <label>Complaint Details: </label>
                             <textarea name="txtReportDetails" class="form-control" readonly style="min-height:200px; font-size:13px; margin:10px 0 0 0 "></textarea>
 						</div>
 					</div>
@@ -260,7 +274,7 @@
 
 <script defer="true">
     $(document).ready( function(){
-
+		loadReportTypes();
         setTimeout(() => {
             $("#frmSearch").trigger('submit');
         }, 1000);
@@ -388,6 +402,22 @@
                 msgPopUp("Error has occured", message, "danger");
             });
         });
+
+		function loadReportTypes() {
+			let data = {txtSearch : '', isShowAll : false};
+            let url = "API/Maintenance/ReportTypes/GetReportTypes.php";
+            $.post(url, data, function(res){
+                let $cbo = $("#cboReportTypes");
+                $cbo.html("");
+				$cbo.append(`<option value="0">All</option>`)
+                $.each(res, function(index, value){
+                    $cbo.append(`<option value="${value.ReportTypeID}">${value.Description}</option>`)
+                });
+            }, 'json')
+            .fail( function(xhr, status, message){
+                msgPopUp("Error has occured", message, "danger");
+            });
+		}
 
     });
 </script>

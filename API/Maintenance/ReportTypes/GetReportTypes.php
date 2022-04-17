@@ -1,6 +1,10 @@
 <?php
     require '../../Connection.php';
     $keyword = $_POST["txtSearch"];
+    $isShowAll = true;
+    if(isset($_POST["isShowAll"])){
+        $isShowAll = $_POST["isShowAll"];
+    }
 
     $query = "SELECT 
                     ann.ReportTypeID,
@@ -16,6 +20,7 @@
                 LEFT JOIN useraccount ub
                     ON ann.UpdatedBy = ub.UserID
                 WHERE Description LIKE '%$keyword%'
+                AND ann.isActive = (CASE WHEN '$isShowAll' = true THEN ann.isActive ELSE 1 END)
             ";
 
     $sql = $conn -> query($query);

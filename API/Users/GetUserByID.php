@@ -18,7 +18,7 @@
                     CASE 
                         WHEN ua.isActive = 1 THEN 'Active'
                         ELSE 'Inactive'
-                        END as RecordStatus,
+                    END as RecordStatus,
                     CASE 
                         WHEN IFNULL(ua.DataCenterID,0) = 0 THEN 'Non-Resident'
                         ELSE 'Resident'
@@ -26,10 +26,11 @@
                     CONCAT(cb.FirstName, ' ', cb.MiddleName, ' ', cb.LastName) as CreatedBy,
                     ua.CreatedDateTime,
                     CONCAT(ub.FirstName, ' ', ub.MiddleName, ' ', ub.LastName) as UpdatedBy,
-                    ua.UpdatedDateTime
+                    ua.UpdatedDateTime,
                     CONCAT(ua.FirstName, ' ', ua.MiddleName, ' ', ua.LastName, ' ', ua.Suffix) as UserCompleteName,
                     ua.Username,
-                    ua.Userpass
+                    ua.Userpass,
+                    ua.UserPosition
                 FROM useraccount ua
                 LEFT JOIN useraccount cb
                     ON ua.CreatedBy = cb.UserID

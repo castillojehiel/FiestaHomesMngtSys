@@ -7,6 +7,7 @@
     $HouseHoldNo = $_POST["txtHouseNo"];
     $Street = $_POST["txtStreet"];
     $HouseHoldName = $_POST["txtHouseHoldName"];
+    $BlockNo = $_POST["txtBlockNo"];
     $ID = $_POST["txtID"];
     $isActive = true;
     if(isset($POST["chkIsActive"])){
@@ -21,7 +22,8 @@
                     HouseNo = '$HouseHoldNo', 
                     isActive = '$isActive', 
                     UpdatedBy = $UpdatedBy, 
-                    UpdatedDateTime = CURRENT_TIMESTAMP()
+                    UpdatedDateTime = CURRENT_TIMESTAMP(),
+                    BlockNo = '$BlockNo'
                 WHERE HouseHoldID = '$ID'
                 ";
     $sql = $conn -> query($query);

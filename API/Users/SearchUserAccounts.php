@@ -30,7 +30,8 @@
                     ua.UpdatedDateTime ,
                     CONCAT(ua.FirstName, ' ', ua.MiddleName, ' ', ua.LastName, ' ', ua.Suffix) as UserCompleteName,
                     ua.Username,
-                    ua.Userpass
+                    ua.Userpass,
+                    ua.UserPosition
                 FROM useraccount ua
                 LEFT JOIN useraccount cb
                     ON ua.CreatedBy = cb.UserID
