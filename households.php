@@ -44,8 +44,10 @@
 				<th>Block No</th>
 				<th>Created By</th>
 				<th>Created Date Time</th>
+				<th>Created By Position</th>
 				<th>Updated By</th>
 				<th>Updated Date Time</th>
+				<th>Updated By Position</th>
 			</thead>
 			<tbody>
 				
@@ -1059,8 +1061,10 @@
 							<td>`+ value.BlockNo +`</td>
 							<td>` + value.CreatedBy + `</td>
 							<td>` + value.CreatedDateTime + `</td>
+							<td>` + value.CreatedByPosition + `</td>
 							<td>` + (value.UpdatedBy == undefined ? '' : value.UpdatedBy) + `</td>
 							<td>` + (value.UpdatedDateTime == undefined ? '' : value.UpdatedDateTime) + `</td>
+							<td>` + (value.UpdatedByPosition == undefined ? '' : value.UpdatedByPosition) + `</td>
 						</tr>
 					`);
 				})

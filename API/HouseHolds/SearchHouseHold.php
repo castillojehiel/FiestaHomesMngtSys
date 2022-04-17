@@ -15,8 +15,15 @@
                 END as RecordStatus,
                 CONCAT(cb.FirstName, ' ', cb.MiddleName, ' ', cb.LastName) as CreatedBy,
                 hh.CreatedDateTime,
+                cb.UserPosition as CreatedByPosition,
                 CONCAT(ub.FirstName, ' ', ub.MiddleName, ' ', ub.LastName) as UpdatedBy,
-                hh.UpdatedDateTime ,
+                hh.UpdatedDateTime,
+                CASE 
+                    WHEN hh.UpdatedDateTime IS NOT NULL THEN 
+                        ub.UserPosition
+                    ELSE 
+                        ''
+                END as UpdatedByPosition,
                 COUNT(dc.DataCenterID) as MembersCount
                 FROM households hh
                 LEFT JOIN useraccount cb

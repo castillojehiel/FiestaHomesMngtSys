@@ -12,8 +12,10 @@
                     ann.isActive, 
                     CONCAT(cb.FirstName, ' ', cb.MiddleName, ' ', cb.LastName) as CreatedBy,
                     ann.CreatedDateTime,
+                    cb.UserPosition as CreatedByPosition,
                     CONCAT(ub.FirstName, ' ', ub.MiddleName, ' ', ub.LastName) as UpdatedBy,
-                    ann.UpdatedDateTime
+                    ann.UpdatedDateTime,
+                    ub.UserPosition as UpdatedByPosition
                 FROM reporttypes ann
                 LEFT JOIN useraccount cb
                     ON ann.CreatedBy = cb.UserID

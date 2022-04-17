@@ -31,6 +31,12 @@
                         ELSE
                             CONCAT(dccb.FirstName, ' ', dccb.MiddleName, ' ', dccb.LastName)
                     END as CreatedBy,
+                    CASE
+                        WHEN dc.isNonUserRegistered = 0 THEN
+                            cb.UserPosition
+                        ELSE
+                            'Resident'
+                    END as CreatedByPosition,
                     dc.CreatedDateTime,
                     CASE
                         WHEN dc.isNonUserRegistered = 0 THEN
@@ -38,6 +44,13 @@
                         ELSE
                             CONCAT(dcub.FirstName, ' ', dcub.MiddleName, ' ', dcub.LastName)
                     END as UpdatedBy,
+                    CASE
+                        WHEN dc.isNonUserRegistered = 0 AND dc.UpdatedDateTime IS NOT NULL THEN
+                            ub.UserPosition
+                        WHEN dc.isNonUserRegistered = 1 AND dc.UpdatedDateTime IS NOT NULL THEN
+                            'Resident'
+                        ELSE ''
+                    END as UpdatedByPosition,
                     dc.UpdatedDateTime,
                     h.HouseHoldName as HouseHold,
                     CONCAT(dc.FirstName, ' ', dc.MiddleName, ' ', dc.LastName, ' ', dc.Suffix) as ResidentName

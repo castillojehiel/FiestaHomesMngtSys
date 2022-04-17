@@ -22,8 +22,13 @@
                     dc.isResident,
                     CONCAT(cb.FirstName, ' ', cb.MiddleName, ' ', cb.LastName) as CreatedBy,
                     dc.CreatedDateTime,
+                    cb.UserPosition as CreatedByPosition,
                     CONCAT(ub.FirstName, ' ', ub.MiddleName, ' ', ub.LastName) as UpdatedBy,
                     dc.UpdatedDateTime,
+                    CASE 
+                        WHEN dc.UpdatedDateTime IS NOT NULL THEN ub.UserPosition 
+                        ELSE  ''
+                    END as UpdatedByPosition,
                     h.HouseHoldName as HouseHold,
                     CONCAT(dc.FirstName, ' ', dc.MiddleName, ' ', dc.LastName, ' ', dc.Suffix) as VisitorName
                 FROM datacenter dc

@@ -73,6 +73,7 @@
 				<th>Logs Type</th>
 				<th>Scanned By</th>
 				<th>Scanned DateTime</th>
+				<th>Scanned By Position</th>
 			</thead>
 			<tbody>
 				
@@ -132,6 +133,7 @@
 										<td>`+ (value.LogType == null ? `` : value.LogType) +`</td>
 										<td>`+ (value.ScannedBy == null ? `` : value.ScannedBy) +`</td>
 										<td>`+ (value.CreatedDateTime == null ? `` : value.CreatedDateTime) +`</td>
+										<td>`+ (value.ScannedByPosition == null ? `` : value.ScannedByPosition) +`</td>
 									</tr>`);
 				});
 			}, 'json')

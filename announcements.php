@@ -51,10 +51,13 @@
 				<th>Status</th>
 				<th>Created By</th>
 				<th>Created Date Time</th>
+				<th>Created By Position</th>
 				<th>Updated By</th>
 				<th>Updated Date Time</th>
+				<th>Updated By Position</th>
 				<th>Published By</th>
 				<th>Published Date Time</th>
+				<th>Published By Position</th>
 			</thead>
 			<tbody>
 				
@@ -554,10 +557,13 @@
                                     <td>` + value.AnnouncementStatus +`</td>
                                     <td>` + value.CreatedBy + `</td>
 									<td>` + value.CreatedDateTime + `</td>
+									<td>` + value.CreatedByPosition + `</td>
 									<td>` + (value.UpdatedBy == undefined ? '' : value.UpdatedBy) + `</td>
 									<td>` + (value.UpdatedDateTime == undefined ? '' : value.UpdatedDateTime) + `</td>
+									<td>` + (value.UpdatedByPosition == undefined ? '' : value.UpdatedByPosition) + `</td>
 									<td>` + (value.PublishedBy == undefined ? '' : value.PublishedBy) + `</td>
 									<td>` + (value.PublishedDateTime == undefined ? '' : value.PublishedDateTime) + `</td>
+									<td>` + (value.PublishedByPosition == undefined ? '' : value.PublishedByPosition) + `</td>
                                 </tr>
                             `); 
                 });

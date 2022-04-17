@@ -42,6 +42,7 @@
                             'VEHICLE'
                     END as TypeOfDetail,
                     CONCAT(ua.FirstName, ' ', ua.MiddleName, ' ', ua.LastName) as ScannedBy,
+                    ua.UserPosition as ScannedByPosition,
                     CASE 
                         WHEN gpl.isVehicleLog = 0 AND dc.isResident = 1 THEN
                             dcHH.HouseNo

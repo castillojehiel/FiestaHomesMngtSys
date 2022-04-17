@@ -11,13 +11,29 @@
                 ann.isPublished, 
                 CONCAT(pb.FirstName, ' ', pb.MiddleName, ' ', pb.LastName)  as PublishedBy,
                 ann.PublishedDateTime, 
+                CASE 
+                    WHEN ann.PublishedDateTime IS NOT NULL THEN
+                        pb.UserPosition
+                    ELSE ''
+                END as PublishedByPosition,
                 CONCAT(upb.FirstName, ' ', upb.MiddleName, ' ', upb.LastName) as UnpublishedBy,
                 ann.UnpublishedDateTime, 
+                CASE 
+                    WHEN ann.UnpublishedDateTime IS NOT NULL THEN
+                        upb.UserPosition
+                    ELSE ''
+                END as UnpublishedByPosition,
                 ann.ExpiryDate,
                 CONCAT(cb.FirstName, ' ', cb.MiddleName, ' ', cb.LastName) as CreatedBy,
                 ann.CreatedDateTime,
+                cb.UserPosition as CreatedByPosition,
                 CONCAT(ub.FirstName, ' ', ub.MiddleName, ' ', ub.LastName) as UpdatedBy,
                 ann.UpdatedDateTime,
+                CASE 
+                    WHEN ann.UpdatedDateTime IS NOT NULL THEN
+                        ub.UserPosition
+                    ELSE ''
+                END as UpdatedByPosition,
                 CASE 
                     WHEN ann.isActive = 0 THEN 'Inactive'
                     WHEN CONVERT(ann.ExpiryDate, DATE) <= CONVERT(CURRENT_TIMESTAMP, DATE) THEN 'Expired'
