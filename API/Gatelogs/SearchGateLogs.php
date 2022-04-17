@@ -65,7 +65,8 @@
                             visitHH.BlockNo
                         ELSE
                             vHH.BlockNo
-                    END as BlockNo
+                    END as BlockNo,
+                    gpl.LogType
                 FROM gatepasslogs gpl
                 LEFT JOIN datacenter dc
                     ON gpl.DataCenterID = dc.DataCenterID

@@ -70,6 +70,7 @@
 				<th>Type</th>
 				<th>HouseHold</th>
 				<th>Address</th>
+				<th>Logs Type</th>
 				<th>Scanned By</th>
 				<th>Scanned DateTime</th>
 			</thead>
@@ -128,6 +129,7 @@
 										<td>`+ (value.TypeOfDetail == null ? `` : value.TypeOfDetail) +`</td>
 										<td>`+ (value.HouseHold == null ? `` : value.HouseHold) +`</td>
 										<td>${(value.HouseNo == null ? `` : value.HouseNo) + ', ' + (value.BlockNo == null ? `` : value.BlockNo) + ', ' +  (value.Street == null ? `` : value.Street)}</td>
+										<td>`+ (value.LogType == null ? `` : value.LogType) +`</td>
 										<td>`+ (value.ScannedBy == null ? `` : value.ScannedBy) +`</td>
 										<td>`+ (value.CreatedDateTime == null ? `` : value.CreatedDateTime) +`</td>
 									</tr>`);

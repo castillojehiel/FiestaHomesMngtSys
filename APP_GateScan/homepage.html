@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-
+<link rel="stylesheet" type="text/css" href="css/bootstrap4-toggle.min.css" />
+<script src="js/bootstrap4-toggle.min.js"></script>
 <style>
     .card{
         max-height: 400px;
@@ -19,11 +20,30 @@
                 </button>
             </div>
         </div>
+        <div class="row">
+            <div class="col" style="text-align: center;">
+                <input id="toggleScanType" type="checkbox" checked data-toggle="toggle" 
+                data-on="Scan Entrance" data-off="Scan Exit"
+                data-onstyle="success" data-offstyle="danger" data-size="lg"s>
+            </div>
+        </div>
     </div>
 
     <script defer="true">
         $(document).ready( function(){
-            
+
+            sessionStorage.setItem["ScanType"] = "IN";
+
+            $("#toggleScanType").change(function(){
+                if($("#toggleScanType").prop('checked')){
+                    sessionStorage.setItem("ScanType", "IN");
+                }
+                else{
+                    sessionStorage.setItem("ScanType", "OUT");
+                }
+
+                console.log(sessionStorage.getItem("ScanType"))
+            });
         });
     </script>
 </html>

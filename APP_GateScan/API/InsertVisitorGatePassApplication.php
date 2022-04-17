@@ -7,6 +7,7 @@
     $HouseholdID = $_POST["txtHouseHoldID"];
     $Reason = $_POST["txtReasonForVisit"];
     $Scanner = $_POST["ScannedByUser"];
+    $LogType = $_POST["LogType"];
 	$isWhiteListed = false;
 	$isBlackListed = false;
 
@@ -34,6 +35,26 @@
     $sql = $conn -> query($query);
 
 	$VLID = $conn -> insert_id;
+
+	$querya = "INSERT INTO gatepasslogs(
+			DataCenterID,
+			QRCode,
+			ScannedBy,
+			CreatedBy,
+			CreatedDateTime
+			LogType
+		)
+		VALUES (
+			'$DataCenterID',
+			'$QRCode',
+			'$Scanner',
+			'$Scanner',
+			CURRENT_TIMESTAMP,
+			'$LogType'
+		)
+	";
+	$sql = $conn -> query($querya);
+
 
     $query1 = "INSERT INTO scannerlogs (Module, UserID, ScanValue, CreatedDateTime) VALUES ('GATEPASS', '$Scanner', '$VisitorQRCode', CURRENT_TIMESTAMP)";
     $conn -> query($query1);

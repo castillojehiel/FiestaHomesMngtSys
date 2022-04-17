@@ -3,6 +3,7 @@
     require 'Connection.php';
     $QRCode = $_POST["QRCode"];
     $Scanner = $_POST["ScannedByUser"];
+    $LogType = $_POST["LogType"];
 
     //check and get datacenter details based on qrcode
     $query = "SELECT * FROM datacenter WHERE  QRCode = '$QRCode'";
@@ -19,15 +20,16 @@
                         QRCode,
                         ScannedBy,
                         CreatedBy,
-                        CreatedDateTime
-
+                        CreatedDateTime,
+                        LogType
                     )
                     VALUES (
                         '$DataCenterID',
                         '$QRCode',
                         '$Scanner',
                         '$Scanner',
-                        CURRENT_TIMESTAMP
+                        CURRENT_TIMESTAMP,
+                        '$LogType'
                     )
                 ";
         $sql = $conn -> query($query);
