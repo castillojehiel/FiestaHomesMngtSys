@@ -12,6 +12,15 @@ const dbConn = mysql.createPool({
 });
 
 // const dbConn = mysql.createPool({
+//   connectionLimit: 100, //important
+//   host: "localhost",
+//   user: "root",
+//   password: "",
+//   database: "fiestahomesdb_live",
+//   debug: false,
+// });
+
+// const dbConn = mysql.createPool({
 //   host: "MYSQL5030.site4now.net",
 //   user: "a83f74_fhlive",
 //   password: "JCmssql01",

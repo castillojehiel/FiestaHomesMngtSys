@@ -22,6 +22,8 @@ const Reports = (report) => {
   this.ResolvedDateTime = residentreports.ResolvedDateTime;
   this.UpdatedBy = residentreports.UpdatedBy;
   this.UpdatedDateTime = residentreports.UpdatedDateTime;
+  this.ComplaintPerson = residentreports.ComplaintPerson;
+  this.ComplaintPersonAddress = residentreports.ComplaintPersonAddress;
 };
 
 Reports.GetReportTypes = (keyword, result) => {
@@ -83,7 +85,9 @@ Reports.SearchResidentReports = (Reports, result) => {
             CASE 
                 WHEN ReportStatus = 'REJECT' OR ReportStatus = 'RESOLVED' OR ReportStatus = 'ACKNOWLEDGE' THEN false
                 ELSE true
-            END as isAllowUpdateStatus
+            END as isAllowUpdateStatus,
+            rr.ComplaintPerson,
+            rr.ComplaintPersonAddress
         FROM residentreports rr
         LEFT JOIN reporttypes rt
             ON rr.ReportTypeID = rt.ReportTypeID
@@ -137,7 +141,9 @@ Reports.CreateNewReport = (report, result) => {
             ReportStatus,
             CreatedBy,
             CreatedDateTime,
-            isActive
+            isActive,
+            ComplaintPerson,
+            ComplainTPersonAddress
         )
         VALUES(
             '${report.CreatedBy}',
@@ -146,7 +152,9 @@ Reports.CreateNewReport = (report, result) => {
             'PENDING',
             '${report.CreatedBy}',
             CURRENT_TIMESTAMP,
-            1
+            1,
+            '${report.ComplaintPerson}',
+            '${report.ComplaintPersonAddress}'
         )`,
     (err, res) => {
       if (err) {
@@ -171,7 +179,9 @@ Reports.UpdateReport = (report, result) => {
             ReportDetails = '${report.ReportDetails}',
             UpdatedBy = '${report.UpdatedBy}',
             UpdatedDateTime = CURRENT_TIMESTAMP,
-            isActive = '${report.isActive}'
+            isActive = '${report.isActive}',
+            ComplaintPerson = '${report.ComplaintPerson}',
+            ComplaintPersonAddress = '${report.ComplaintPersonAddress}'
         WHERE   ReportID = '${report.ReportID}'`,
     (err, res) => {
       if (err) {
