@@ -24,7 +24,9 @@
                     rr.CreatedDateTime,
                     CONCAT(ub.FirstName, ' ', ub.MiddleName, ' ', ub.LastName) as UpdatedBy,
                     rr.UpdatedDateTime,
-                    rt.Description as ReportType
+                    rt.Description as ReportType,
+                    rr.ComplaintPerson,
+                    rr.ComplaintPersonAddress
                 FROM residentreports rr
                 LEFT JOIN reporttypes rt
                     ON rr.ReportTypeID = rt.ReportTypeID

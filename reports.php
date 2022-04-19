@@ -121,6 +121,23 @@
 						</div>
 					</div>
                     <hr>
+					<div class="form-group m-3">
+						<div class="row">
+							<div class="col-lg-2">
+								<label>Complained Person:</label>
+							</div>
+							<div class="col-lg-4">
+								<input type="text" name="txtComplainedPerson" class="form-control" />
+							</div>
+                            <div class="col-lg-2">
+								<label>Complained Person Address:</label>
+							</div>
+							<div class="col-lg-4">
+								<textarea name="txtComplainedPersonAddress" class="form-control" style="min-height:100px; font-size:13px; margin:10px 0 0 0 "></textarea>
+							</div>
+						</div>
+					</div>
+                    <hr>
                     <div class="form-group m-3">
 						<div class="row">
                             <label>Complaint Details: </label>
@@ -358,6 +375,8 @@
 				$frm.find('input[name=txtTaggedResolvedBy]').val(res.ResolvedBy);
 				$frm.find('input[name=txtTaggedResolvedDateTime]').val(res.ResolvedDateTime);
 				$frm.find('input[name=txtTaggedResolvedRemarks]').val(res.ReportResolveRemarks);
+				$frm.find('input[name=txtComplainedPerson]').val(res.ComplaintPerson);
+				$frm.find('textarea[name=txtComplainedPersonAddress]').html(res.ComplaintPersonAddress);
 
 				$("#mdlViewReport").modal("show");
             }, 'json')

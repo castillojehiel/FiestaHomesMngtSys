@@ -30,7 +30,9 @@
                     CASE 
                         WHEN ReportStatus = 'REJECT' OR ReportStatus = 'RESOLVED'  THEN false
                         ELSE true
-                    END as isAllowUpdateStatus
+                    END as isAllowUpdateStatus,
+                    rr.ComplaintPerson,
+                    rr.ComplaintPersonAddress
                 FROM residentreports rr
                 LEFT JOIN reporttypes rt
                     ON rr.ReportTypeID = rt.ReportTypeID
