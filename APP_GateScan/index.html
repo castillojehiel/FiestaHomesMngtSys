@@ -200,6 +200,7 @@
         
         let currentNavItemID = "";
         let UserObj = {};
+        sessionStorage.setItem("ScanType", "IN");
         /////////////////
 
         $("#main").on('click', "#btnRefreshRecentLogs", function(){
@@ -311,6 +312,7 @@
             let data = $(this).serializeArray();
             let obj = JSON.parse(localStorage.getItem("UserObj"));
             data.push({name: "ScannedByUser", value : obj.UserID});
+            data.push({name: "LogType", value : sessionStorage.getItem('ScanType')});
             $.post(url, data, function(res){
                 if(res.result){
                     if(res.isWhiteListed == false && res.isBlackListed == false)

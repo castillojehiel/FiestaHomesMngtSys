@@ -2,6 +2,9 @@
 	header("Access-Control-Allow-Origin: *");
     require 'Connection.php';
     include 'sms.php';
+	error_reporting(E_ALL);
+ini_set('display_errors', '1');
+
     $VisitorID = $_POST["txtVisitorID"];
     $VisitorQRCode = $_POST["txtVisitorQRCode"];
     $HouseholdID = $_POST["txtHouseHoldID"];
@@ -11,8 +14,7 @@
 	$isWhiteListed = false;
 	$isBlackListed = false;
 
-    $query = "INSERT INTO 
-                VisitorLogs(
+    $query = "INSERT INTO visitorlogs(
                         VisitorID, 
                         isApproved,
                         isActive,
@@ -33,7 +35,7 @@
             ";
 
     $sql = $conn -> query($query);
-
+	
 	$VLID = $conn -> insert_id;
 
 	$querya = "INSERT INTO gatepasslogs(
@@ -41,12 +43,12 @@
 			QRCode,
 			ScannedBy,
 			CreatedBy,
-			CreatedDateTime
+			CreatedDateTime,
 			LogType
 		)
 		VALUES (
-			'$DataCenterID',
-			'$QRCode',
+			'$VisitorID',
+			'$VisitorQRCode',
 			'$Scanner',
 			'$Scanner',
 			CURRENT_TIMESTAMP,
@@ -54,6 +56,7 @@
 		)
 	";
 	$sql = $conn -> query($querya);
+	echo($conn -> error);
 
 
     $query1 = "INSERT INTO scannerlogs (Module, UserID, ScanValue, CreatedDateTime) VALUES ('GATEPASS', '$Scanner', '$VisitorQRCode', CURRENT_TIMESTAMP)";
