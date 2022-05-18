@@ -19,7 +19,9 @@
                     CONCAT(ub.FirstName, ' ', ub.MiddleName, ' ', ub.LastName) as UpdatedBy,
                     dc.UpdatedDateTime,
                     CONCAT(dc.FirstName, ' ', dc.MiddleName, ' ', dc.LastName, ' ', dc.Suffix) as ResidentName,
-                    (CASE WHEN hhcp.HCPID IS NULL THEN false ELSE true END) as isContactPerson
+                    (CASE WHEN hhcp.HCPID IS NULL THEN false ELSE true END) as isContactPerson,
+                    TIMESTAMPDIFF(YEAR, dc.BirthDate, CURDATE()) AS Age,
+                    dc.RelationshipToHomeowner
                 FROM datacenter dc
                 LEFT JOIN households h
                     ON dc.HouseHoldID = h.HouseHoldID

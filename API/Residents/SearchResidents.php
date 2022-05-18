@@ -53,7 +53,10 @@
                     END as UpdatedByPosition,
                     dc.UpdatedDateTime,
                     h.HouseHoldName as HouseHold,
-                    CONCAT(dc.FirstName, ' ', dc.MiddleName, ' ', dc.LastName, ' ', dc.Suffix) as ResidentName
+                    CONCAT(dc.FirstName, ' ', dc.MiddleName, ' ', dc.LastName, ' ', dc.Suffix) as ResidentName,
+                    h.Street ,
+                    h.BlockNo,
+                    h.HouseNo
                 FROM datacenter dc
                 LEFT JOIN households h
                     ON dc.HouseHoldID = h.HouseHoldID

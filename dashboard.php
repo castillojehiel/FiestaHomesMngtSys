@@ -12,24 +12,24 @@
                 <div class="col-lg-4">
                     <div class="card ">
                         <div class="card-body" id="cardResidentCount">
-                            <h5 class="card-title">Residents Count:</h5>
-                            <h1>100</h1>
+                            <h5 class="card-title">Registered Residents Count:</h5>
+                            <h1>0</h1>
                         </div>
                     </div>
                 </div>
                 <div class="col-lg-4">
                     <div class="card">
                         <div class="card-body" id="cardHouseHoldCount">
-                            <h5 class="card-title">households Count:</h5>
-                            <h1>100</h1>
+                            <h5 class="card-title">Registered Homeowners Count:</h5>
+                            <h1>0</h1>
                         </div>
                     </div>
                 </div>
                 <div class="col-lg-4">
                     <div class="card">
                         <div class="card-body" id="cardVisitorCount">
-                            <h5 class="card-title">Visitors Count:</h5>
-                            <h1>100</h1>
+                            <h5 class="card-title">Visitors Count for Current Month:</h5>
+                            <h1>0</h1>
                         </div>
                     </div>
                 </div>

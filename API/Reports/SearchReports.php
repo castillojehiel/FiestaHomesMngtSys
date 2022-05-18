@@ -3,6 +3,8 @@
     $keyword = $_POST["txtSearch"];
     $types = $_POST["cboReportTypes"];
     $status = $_POST["cboStatus"];
+    $DateFrom = $_POST["DateFrom"];
+    $DateTo = $_POST["DateTo"];
 
     $query = "SELECT
                     rr.ReportID, 
@@ -53,6 +55,7 @@
                         )
                     AND rr.ReportTypeID = (CASE WHEN '$types' = 0  THEN rr.ReportTypeID ELSE '$types' END)
                     AND UPPER(rr.ReportStatus) = (CASE WHEN UPPER('$status') = 'ALL' THEN UPPER(rr.ReportStatus) ELSE UPPER('$status') END)
+                    AND (CONVERT(rr.CreatedDateTime, DATE) >= '$DateFrom' AND CONVERT(rr.CreatedDateTime, DATE) <= '$DateTo')
                 ";
     $sql = $conn -> query($query);
     $data = $sql -> fetch_all(MYSQLI_ASSOC);

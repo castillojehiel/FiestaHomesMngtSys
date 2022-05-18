@@ -46,11 +46,12 @@
 	}
 
     //update member datacenter details
-    $prepQuery = $conn -> prepare("UPDATE datacenter SET HouseHoldID = ? WHERE DataCenterID =?");
-    $prepQuery -> bind_param("ii", $ID, $DCID);
+    $prepQuery = $conn -> prepare("UPDATE datacenter SET HouseHoldID = ?, RelationshipToHomeowner = ? WHERE DataCenterID =?");
+    $prepQuery -> bind_param("isi", $ID, $Relationship, $DCID);
 	foreach($HouseHoldMembers as $item){
 		$data = get_object_vars($item);
         $ID = $id;
+        $Relationship = $data["Relationship"];
         $DCID = $data["DataCenterID"];
         $prepQuery -> execute();
 	}

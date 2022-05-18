@@ -50,6 +50,7 @@
 				<th>Gender</th>
 				<th>Birthdate</th>
 				<th>Contact No</th>
+				<th>Address</th>
 				<th>Status</th>
 				<th>Created By</th>
 				<th>Created Date Time</th>
@@ -791,6 +792,7 @@
 							<td>`+ value.Gender +`</td>
 							<td>`+ value.BirthDate+`</td>
 							<td>`+ value.ContactNo +`</td>
+							<td>`+ (value.Street ?? '') + ' ' + (value.BlockNo ?? '') + ' ' + (value.HouseNo ?? '') +`</td>
 							<td>`+ value.RecordStatus +`</td>
 							<td>` + value.CreatedBy + `</td>
 							<td>` + value.CreatedDateTime + `</td>

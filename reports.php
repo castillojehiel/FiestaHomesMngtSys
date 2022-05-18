@@ -6,7 +6,7 @@
 <style>
 	@media print {
 		@page {
-			margin: 0; 
+			margin: 2; 
 		}
 	}
 </style>
@@ -17,10 +17,16 @@
     <hr/>
 
     <div class="row">
-        <form id="frmSearch" class="col">
+        <form id="frmSearch" class="col" >
 			<div class="form-group row">
 				<div class="col-lg-1">
 					<label>Search:</label>
+				</div>
+				<div class="col-lg-2">
+					<input type="date" class="form-control" name="DateFrom" value="<?php echo date("Y-m-d")?>"  />
+				</div>
+				<div class="col-lg-2">
+					<input type="date" class="form-control" name="DateTo" value="<?php echo date("Y-m-d")?>"  />
 				</div>
 				<div class="col-lg-2">
 					<select id="cboReportTypes" name="cboReportTypes" class="form-control">
@@ -36,20 +42,23 @@
 						<option value="Reject">Reject</option>
 					</select>
 				</div>
-				<div class="col-lg-3">
+				
+			</div>
+			<div class=" form-group row pt-1">
+				<div class="col-lg-4 offset-lg-1">
 					<input type="text" name="txtSearch" class="form-control" placeholder="Report No / Reporter Name" />
 				</div>
 				<div class="col-lg-2">
-					<button type="submit" class="btn btn-primary">
+					<button type="submit" class="btn btn-primary w-100">
 						<span class="fas fa-search" ></span>
 						Search
 					</button>
 				</div>
 				
-				<div class="col-lg-2s">
-					<button id="btnNew" sty type="button" class="btn btn-success" style="display:none; float:right">
-						<span class="fas fa-plus" ></span>
-						New
+				<div class="col-lg-2">
+					<button id="btnPrint" sty type="button" class="btn btn-warning w-100" >
+						<span class="fas fa-print" ></span>
+						Print
 					</button>
 				</div>
 			</div>
@@ -58,12 +67,14 @@
     <div class="row">
         <table id="tblList" class="table table-condensed table-striped table-bordered">
 			<thead class="thead-dark">
-				<th width="150px">Action</th>
+				<th width="150px" class="printHide">Action</th>
 				<th>Complaint No</th>
 				<th>Type</th>
 				<th>Status</th>
 				<th>Complainant</th>
 				<th>Complaint Date</th>
+				<th>Resolved By</th>
+				<th>Resolved Date</th>
 			</thead>
 			<tbody>
 				
@@ -133,7 +144,7 @@
 								<label>Complained Person Address:</label>
 							</div>
 							<div class="col-lg-4">
-								<textarea name="txtComplainedPersonAddress" class="form-control" style="min-height:100px; font-size:13px; margin:10px 0 0 0 "></textarea>
+								<textarea name="txtComplainedPersonAddress" class="form-control" style=" font-size:13px; margin:10px 0 0 0 "></textarea>
 							</div>
 						</div>
 					</div>
@@ -141,7 +152,7 @@
                     <div class="form-group m-3">
 						<div class="row">
                             <label>Complaint Details: </label>
-                            <textarea name="txtReportDetails" class="form-control" style="min-height:200px; font-size:13px; margin:10px 0 0 0 "></textarea>
+                            <textarea name="txtReportDetails" class="form-control" style=" font-size:13px; margin:10px 0 0 0 "></textarea>
 						</div>
 					</div>
                     <hr>
@@ -164,7 +175,7 @@
                     <div class="form-group m-3">
 						<div class="row">
                             <label>Acknowledgement Remarks: </label>
-                            <textarea name="txtAcknowledgedmentRemarks" class="form-control" style="min-height:200px; font-size:13px; margin:10px 0 0 0 "></textarea>
+                            <textarea name="txtAcknowledgedmentRemarks" class="form-control" style="font-size:13px; margin:10px 0 0 0 "></textarea>
 						</div>
 					</div>
                     <hr>
@@ -187,7 +198,7 @@
                     <div class="form-group m-3">
 						<div class="row">
                             <label>Tagged Resolved Remarks: </label>
-                            <textarea name="txtTaggedResolvedRemarks" class="form-control" style="min-height:200px; font-size:13px; margin:10px 0 0 0 "></textarea>
+                            <textarea name="txtTaggedResolvedRemarks" class="form-control" style=" font-size:13px; margin:10px 0 0 0 "></textarea>
 						</div>
 					</div>
 				</form>
@@ -250,7 +261,7 @@
                     <div class="form-group m-3">
 						<div class="row">
                             <label>Complaint Details: </label>
-                            <textarea name="txtReportDetails" class="form-control" readonly style="min-height:200px; font-size:13px; margin:10px 0 0 0 "></textarea>
+                            <textarea name="txtReportDetails" class="form-control" readonly style=" font-size:13px; margin:10px 0 0 0 "></textarea>
 						</div>
 					</div>
                     <hr>
@@ -272,7 +283,7 @@
 					<div class="form-group m-3">
 						<div class="row">
                             <label>Remarks: </label>
-                            <textarea name="txtUpdateStatusRemarks" required class="form-control" style="min-height:200px; font-size:13px; margin:10px 0 0 0 "></textarea>
+                            <textarea name="txtUpdateStatusRemarks" required class="form-control" style=" font-size:13px; margin:10px 0 0 0 "></textarea>
 						</div>
 					</div>
                     
@@ -295,14 +306,44 @@
         setTimeout(() => {
             $("#frmSearch").trigger('submit');
         }, 1000);
+
+		$("#frmViewReport input").prop('readonly', 'true')
+		$("#frmViewReport textarea").prop('readonly', 'true')
         /////////////////---------------
+		$("#frmSearch input[name=txtSearch]").keyup( function(){
+			$("#frmSearch").trigger('submit');
+		});
+
+		$("#frmSearch input[name=DateFrom], #frmSearch input[name=DateTo], #frmSearch select[name=cboReportTypes], #frmSearch select[name=cboStatus]").change( function(){
+			$("#frmSearch").trigger('submit');
+		});
+
+		$("#btnPrint").click( function(){
+			$(".printHide").hide();
+			$("#tblList").printThis({
+					importCSS : true,
+					importStyle : true,
+					loadCSS : document.URL.substr(0,document.URL.lastIndexOf('/')) + "/css/bootstrap.min.css",
+					header : `<h4>Reports List</h4>
+							</br>
+							<p>Types : ${$("#frmSearch select[name=cboReportTypes] option:selected").html()} </p>
+							<p>Status : ${$("#frmSearch select[name=cboStatus] option:selected").html()} </p>
+							<p>Date From : ${$("#frmSearch input[name=DateFrom]").val()} </p>
+							<p>Date To : ${$("#frmSearch input[name=DateFrom]").val()} </p>`
+				});
+			setTimeout(() => {
+				$(".printHide").show();
+			}, 2000);
+		});
 
 		$("#btnPrintReport").click( function(){
+			$("#frmViewReport").css({'font-size' : '10px !important'});
 			$("#frmViewReport").printThis({
 				importCSS : true,
 				importStyle : true,
 				canvas : true,
-				loadCSS : document.URL.substr(0,document.URL.lastIndexOf('/')) + "/css/bootstrap.min.css"
+				loadCSS : document.URL.substr(0,document.URL.lastIndexOf('/')) + "/css/bootstrap.min.css",
+				header : `<h3>Complaint Report</h3>`
 			});
 		});
 
@@ -395,7 +436,7 @@
                 $.each(res, function(index, value){
                     $tbl.append(`
                                 <tr id="`+value.ReportID+`">
-                                    <td>
+                                    <td class="printHide">
                                         <button class="btn btn-primary btnView">
                                             <span class="fas fa-eye"></span>
                                             View
@@ -410,6 +451,8 @@
                                     <td>`+ value.ReportStatus +`</td>
                                     <td>`+ value.CreatedBy +`</td>
                                     <td>`+ value.CreatedDateTime +`</td>
+									<td>`+ (value.ResolvedBy ?? '') +`</td>
+                                    <td>`+ (value.ResolvedDateTime ?? '') +`</td>
                                 </tr>
                             `); 
                 });

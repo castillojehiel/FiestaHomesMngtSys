@@ -69,8 +69,9 @@
 				<th>Details</th>
 				<th>Type</th>
 				<th>HouseHold</th>
-				<th>Address</th>
+				<th>Address | Visited Address</th>
 				<th>Logs Type</th>
+				<th>Allowed Access</th>
 				<th>Scanned By</th>
 				<th>Scanned DateTime</th>
 				<th>Scanned By Position</th>
@@ -131,6 +132,7 @@
 										<td>`+ (value.HouseHold == null ? `` : value.HouseHold) +`</td>
 										<td>${(value.HouseNo == null ? `` : value.HouseNo) + ', ' + (value.BlockNo == null ? `` : value.BlockNo) + ', ' +  (value.Street == null ? `` : value.Street)}</td>
 										<td>`+ (value.LogType == null ? `` : value.LogType) +`</td>
+										<td>`+ (value.AllowedAccess == null ? `` : value.AllowedAccess) +`</td>
 										<td>`+ (value.ScannedBy == null ? `` : value.ScannedBy) +`</td>
 										<td>`+ (value.CreatedDateTime == null ? `` : value.CreatedDateTime) +`</td>
 										<td>`+ (value.ScannedByPosition == null ? `` : value.ScannedByPosition) +`</td>

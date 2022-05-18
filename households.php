@@ -175,9 +175,12 @@
 							<div class="row">
 								<table id="tblHouseHoldResidents" class="table table-condensed table-striped table-bordered">
 									<thead class="thead-dark">
-										<th width="200">Action</th>
+										<th width="130px">Action</th>
 										<th>Name</th>
-										<th width="170">is House Hold Contact</th>
+										<th width="100">is Homeowner</th>
+										<th>Age</th>
+										<th>Gender</th>
+										<th>Relationship To Homeowner</th>
 									</thead>
 									<tbody>
 										
@@ -310,7 +313,10 @@
 									<thead class="thead-dark">
 										<th width="200">Action</th>
 										<th>Name</th>
-										<th width="170">is House Hold Contact</th>
+										<th width="170">is Homeowner</th>
+										<th>Age</th>
+										<th>Gender</th>
+										<th>Relationship To Homeowner</th>
 									</thead>
 									<tbody>
 										
@@ -398,7 +404,10 @@
 								<table id="tblHouseHoldResidents" class="table table-condensed table-striped table-bordered">
 									<thead class="thead-dark">
 										<th>Name</th>
-										<th width="170">is House Hold Contact</th>
+										<th width="170">is Home Owner</th>
+										<th >Age</th>
+										<th >Gender</th>
+										<th >Relationship To Homeowner</th>
 									</thead>
 									<tbody>
 										
@@ -416,7 +425,7 @@
 							<div class="row">
 								<table id="tblHouseHoldVehicles" class="table table-condensed table-striped table-bordered">
 									<thead class="thead-dark">
-										<th>Model</th>
+										<th>Make</th>
 										<th>Color</th>
 										<th>Plate Number</th>
 									</thead>
@@ -696,7 +705,7 @@
 			event.preventDefault();
 			let data = $(this).serializeArray();
 			let list = HouseHoldResidents.map(x =>{
-						return {DataCenterID: x.DataCenterID, isContactPerson : x.isContactPerson}
+						return {DataCenterID: x.DataCenterID, isContactPerson : x.isContactPerson, Relationship : x.Relationship}
 					} );
 			console.log(list);
 			data.push({name: "HouseHoldMembers" , value : JSON.stringify(list)})
@@ -774,7 +783,8 @@
 				console.log(res);
 				$.each( res, function(indx, value){
 					console.log(value.ResidentName + " " + value.isContactPerson + " " + parseInt(value.isContactPerson));
-					$tbl.append(`
+					if(modalid == "mdlEditHouseHold"){
+						$tbl.append(`
 							<tr id="`+ value.DataCenterID +`">
 								` + (
 									modalid != 'mdlViewHouseHold' ?
@@ -786,14 +796,45 @@
 									</td>` : ''
 								) + `
 								<td> `+ value.ResidentName +`</td>
-								<td> <input type="checkbox" class="chkHouseHoldContactPersonStatus" 
+								<td> <input type="checkbox"  class="chkHouseHoldContactPersonStatus" 
 										`
 										+ (parseInt(value.isContactPerson) == 1 ? "checked='checked'" : "") +
 										`
 										" /> 
 								</td>
+								<td> `+ value.Age +`</td>
+								<td> `+ value.Gender +`</td>
+								<td> 
+									<input type="text" class="form-control txtRelToHomeOwner" value="`+ value.RelationshipToHomeowner +`" />
+								</td>
 							</tr>
 						`);
+					}
+					else{
+						$tbl.append(`
+							<tr id="`+ value.DataCenterID +`">
+								` + (
+									modalid != 'mdlViewHouseHold' ?
+									`<td>
+										<button class="btn btn-danger btnRemoveResident">
+											<span class="fas fa-trash" ></span>
+											Remove
+										</button>
+									</td>` : ''
+								) + `
+								<td> `+ value.ResidentName +`</td>
+								<td> <input type="checkbox"  class="chkHouseHoldContactPersonStatus" 
+										`
+										+ (parseInt(value.isContactPerson) == 1 ? "checked='checked'" : "") +
+										`
+										" /> 
+								</td>
+								<td> `+ value.Age +`</td>
+								<td> `+ value.Gender +`</td>
+								<td> `+ value.RelationshipToHomeowner +` </td>
+							</tr>
+						`);
+					}
 				});
 			}, 'json')
 		}
@@ -823,7 +864,7 @@
 			event.preventDefault();
 			let data = $(this).serializeArray();
 			let list = HouseHoldResidents.map(x =>{
-						return {DataCenterID: x.DataCenterID, isContactPerson : x.isContactPerson}
+						return {DataCenterID: x.DataCenterID, isContactPerson : x.isContactPerson, Relationship : x.Relationship}
 					} );
 			console.log(list);
 			data.push({name: "HouseHoldMembers" , value : JSON.stringify(list)})
@@ -893,6 +934,11 @@
 														<td> `+ obj.ResidentName +`</td>
 														<td> 
 															<input type="checkbox" class="chkHouseHoldContactPersonStatus" " /> 
+														</td>
+														<td> `+ obj.Age +`</td>
+														<td> `+ obj.Gender +`</td>
+														<td> 
+															<input type="text" class="form-control txtRelToHomeOwner" />
 														</td>
 													</tr>
 												`);
@@ -984,12 +1030,31 @@
 														<td> 
 															<input type="checkbox" class="chkHouseHoldContactPersonStatus" " /> 
 														</td>
+														<td> `+ obj.Age +`</td>
+														<td> `+ obj.Gender +`</td>
+														<td> 
+															<input type="text" class="form-control txtRelToHomeOwner" />
+														</td>
 													</tr>
 												`);
 			}
 			else{
 				msgPopUp("Already Exists", "Resident Already belongs to Household.", "warning");
 			}		
+		});
+
+		$(document).on('keyup', '.txtRelToHomeOwner',function(){
+			let txtVal = $(this).val();
+			let id = $(this).parent().parent().attr('id');
+			HouseHoldResidents = HouseHoldResidents.map( x => {
+					let val = Object.assign({}, x);
+					if(val.DataCenterID == id){
+						val.Relationship = txtVal;
+					}
+					return val;
+				});
+			console.log(txtVal);
+			console.log(HouseHoldResidents);
 		});
 
 		$("#mdlNewHouseHold #btnSearchResidentSubmit").click( function(){

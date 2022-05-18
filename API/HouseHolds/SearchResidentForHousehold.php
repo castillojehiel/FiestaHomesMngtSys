@@ -29,7 +29,8 @@
                     END as UpdatedBy,
                     dc.UpdatedDateTime,
                     CONCAT(dc.FirstName, ' ', dc.MiddleName, ' ', dc.LastName, ' ', dc.Suffix) as ResidentName,
-                    FALSE as isContactPerson
+                    FALSE as isContactPerson,
+                    TIMESTAMPDIFF(YEAR, dc.BirthDate, CURDATE()) AS Age
                 FROM datacenter dc
                 LEFT JOIN households h
                     ON dc.HouseHoldID = h.HouseHoldID

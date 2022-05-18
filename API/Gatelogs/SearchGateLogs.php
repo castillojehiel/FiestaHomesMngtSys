@@ -67,7 +67,8 @@
                         ELSE
                             vHH.BlockNo
                     END as BlockNo,
-                    gpl.LogType
+                    gpl.LogType,
+                    CASE WHEN vl.isApproved = 0 AND dc.isResident = 0 AND gpl.isVehicleLog = 0 THEN 'Denied' ELSE 'Allowed' END as AllowedAccess
                 FROM gatepasslogs gpl
                 LEFT JOIN datacenter dc
                     ON gpl.DataCenterID = dc.DataCenterID
@@ -81,6 +82,8 @@
                     ON gpl.TargetHouseHoldID = visitHH.HouseHoldID
                 LEFT JOIN useraccount ua
                     ON gpl.CreatedBy = ua.UserID
+                LEFT JOIN visitorlogs vl
+                    ON vl.VisitorID = gpl.DataCenterID AND CONVERT(DATE_FORMAT(gpl.CreatedDateTime,'%Y-%m-%d-%H:%i:00'),DATETIME) = CONVERT(DATE_FORMAT(vl.RequestDateTime,'%Y-%m-%d-%H:%i:00'),DATETIME)
                 WHERE 
                     (CONVERT(gpl.CreatedDateTime, DATE) >= '$DateFrom' AND CONVERT(gpl.CreatedDateTime, DATE) <= '$DateTo')
                     AND 

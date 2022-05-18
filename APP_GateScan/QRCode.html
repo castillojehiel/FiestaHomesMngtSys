@@ -1,246 +1,165 @@
-<html>
+<?php include './connection/connection.php';
+ob_start(); session_start();
+$userID = $_SESSION['sessionUser'];
+?>
+<!DOCTYPE html>
+<html lang="en">
   <head>
-    <style>
-      /* #qr-shaded-region{
-        border-width: 9.3vw 10vw !important;
-    } */
-    </style>
-    <body>
-      <div
-        id="qr-reader"
-        style="width: 90vw; height: 80vh; margin: 0 auto !important"
-      ></div>
-      <div id="qr-reader-results"></div>
-      <div
-        id="divVisitorForm"
-        class="col"
-        style="
-          background: white;
-          height: 100%;
-          display: none;
-          position: fixed;
-          top: 0;
-        "
-      >
-        <div class="col">
-          <div class="row">
-            <form id="frmVisitorForm">
-              <div class="form-group m-3">
-                <div class="row">
-                  <label>Visitor Name:</label>
-                  <input
-                    type="text"
-                    name="txtVisitorName"
-                    readonly
-                    class="form-control"
-                  />
-                  <input
-                    type="hidden"
-                    name="txtVisitorID"
-                    readonly
-                    class="form-control"
-                  />
-                  <input
-                    type="hidden"
-                    name="txtVisitorQRCode"
-                    readonly
-                    class="form-control"
-                  />
-                </div>
-              </div>
-              <div class="form-group m-3">
-                <div class="row">
-                  <label>House Hold to Visit:</label>
-                  <input
-                    type="text"
-                    name="txtHouseHold"
-                    readonly
-                    class="form-control"
-                  />
-                  <input
-                    type="hidden"
-                    name="txtHouseHoldID"
-                    readonly
-                    class="form-control"
-                  />
-                  <button
-                    id="btnSearchHouseHoldForVisit"
-                    type="button"
-                    class="btn btn-primary"
-                  >
-                    <span class="fas fa-search"></span>
-                    Search Household
-                  </button>
-                </div>
-              </div>
-              <div class="form-group m-3">
-                <div class="row">
-                  <label>Reason for Visit:</label>
-                  <textarea
-                    name="txtReasonForVisit"
-                    class="form-control"
-                    style="min-height: 200px"
-                  ></textarea>
-                </div>
-              </div>
-              <div class="form-group m-3">
-                <div class="row">
-                  <button type="submit" class="btn btn-primary">
-                    Save Visit Application
-                  </button>
-                </div>
-              </div>
-            </form>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <title>Home - Alumni</title>
+    <meta
+      content="width=device-width, initial-scale=1.0, shrink-to-fit=no"
+      name="viewport"
+    />
+    <!--<link rel="icon" href="./assets/img/icon.ico" type="image/x-icon"/>-->
+
+    <!-- Fonts and icons -->
+    <script src="./assets/js/plugin/webfont/webfont.min.js"></script>
+
+    <script>
+      WebFont.load({
+        google: { families: ["Lato:300,400,700,900"] },
+        custom: {
+          families: [
+            "Flaticon",
+            "Font Awesome 5 Solid",
+            "Font Awesome 5 Regular",
+            "Font Awesome 5 Brands",
+            "simple-line-icons",
+          ],
+          urls: ["./assets/css/fonts.min.css"],
+        },
+        active: function () {
+          sessionStorage.fonts = true;
+        },
+      });
+    </script>
+    <!-- CSS Files -->
+    <link rel="stylesheet" href="./assets/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="./assets/css/styles.css" />
+  </head>
+  <body>
+    <div class="content">
+      <div class="panel-header bg-primary-gradient">
+        <div class="page-inner py-5">
+          <div
+            class="d-flex align-items-left align-items-md-center flex-column flex-md-row"
+          >
+            <div>
+              <h2 class="text-white pb-2 fw-bold">Scan</h2>
+              <h5 class="text-white op-7 mb-2">Scan Event Qr Code</h5>
+            </div>
+            <div class="ml-md-auto py-2 py-md-0">
+              <a
+                href="alumniHome.php"
+                class="btn btn-white btn-border btn-round mr-2"
+                >Back to Home</a
+              >
+              <a href="alumniSelectFun.php" class="btn btn-secondary btn-round"
+                >Donations</a
+              >
+            </div>
           </div>
         </div>
       </div>
-    </body>
-    <script src="js/html5-qrcode.min.js"></script>
+      <div class="col-md-12">
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title" style="text-align: center">
+              Scan QR Code
+            </div>
+          </div>
+          <div class="card-body">
+            <div class="container">
+              <video id="preview" width="100%"></video>
+              <form
+                action="processAttendance.php"
+                method="POST"
+                clas="form-horizontal"
+              >
+                <input type="hidden" name="eventID" id="text" readonyy="" />
+                <input
+                  type="hidden"
+                  name="userID"
+                  value="<?php echo $userID?>"
+                  id="text"
+                  readonyy=""
+                />
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!--   Core JS Files   -->
+    <script src="assets/js/core/jquery.3.2.1.min.js"></script>
+    <script src="assets/js/core/popper.min.js"></script>
+    <script src="assets/js/core/bootstrap.min.js"></script>
+
+    <!-- jQuery UI -->
+    <script src="assets/js/plugin/jquery-ui-1.12.1.custom/jquery-ui.min.js"></script>
+    <script src="assets/js/plugin/jquery-ui-touch-punch/jquery.ui.touch-punch.min.js"></script>
+
+    <!-- jQuery Scrollbar -->
+    <script src="assets/js/plugin/jquery-scrollbar/jquery.scrollbar.min.js"></script>
+
+    <!-- Chart JS -->
+    <script src="assets/js/plugin/chart.js/chart.min.js"></script>
+
+    <!-- jQuery Sparkline -->
+    <script src="assets/js/plugin/jquery.sparkline/jquery.sparkline.min.js"></script>
+
+    <!-- Chart Circle -->
+    <script src="assets/js/plugin/chart-circle/circles.min.js"></script>
+
+    <!-- Datatables -->
+    <script src="assets/js/plugin/datatables/datatables.min.js"></script>
+
+    <!-- Bootstrap Notify -->
+    <script src="assets/js/plugin/bootstrap-notify/bootstrap-notify.min.js"></script>
+
+    <!-- jQuery Vector Maps -->
+    <script src="assets/js/plugin/jqvmap/jquery.vmap.min.js"></script>
+    <script src="assets/js/plugin/jqvmap/maps/jquery.vmap.world.js"></script>
+
+    <!-- Sweet Alert -->
+    <script src="assets/js/plugin/sweetalert/sweetalert.min.js"></script>
+
+    <!-- Atlantis JS -->
+    <script src="assets/js/atlantis.min.js"></script>
+    <script
+      type="text/javascript"
+      src="https://cdnjs.cloudflare.com/ajax/libs/webrtc-adapter/3.3.3/adapter.min.js"
+    ></script>
+    <script
+      type="text/javascript"
+      src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.1.10/vue.min.js"
+    ></script>
+    <script
+      type="text/javascript"
+      src="https://rawgit.com/schmich/instascan-builds/master/instascan.min.js"
+    ></script>
     <script>
-      $(document).ready(function () {
-        let beep = new Audio("audio/beep.mp3");
-
-        function InsertNewVisitorGateLog(QRCode) {
-          let data = { QRCode: QRCode };
-          $.post(
-            url,
-            data,
-            function (res) {
-              if (res.result) {
-                alert("Gate pass successfully saved.");
-                loadHomepage();
-              } else {
-                alert("Transaction failed.");
-              }
-            },
-            "json"
-          ).fail(function (xhr, status, message) {
-            alert("Error has occured. " + message);
-          });
-        }
-
-        function docReady(fn) {
-          // see if DOM is already available
-          if (
-            document.readyState === "complete" ||
-            document.readyState === "interactive"
-          ) {
-            // call on next available tick
-            setTimeout(fn, 1);
+      let scanner = new Instascan.Scanner({
+        video: document.getElementById("preview"),
+        mirror: false,
+      });
+      Instascan.Camera.getCameras()
+        .then(function (cameras) {
+          if (cameras.length > 0) {
+            scanner.start(cameras[1]);
           } else {
-            document.addEventListener("DOMContentLoaded", fn);
+            alert("No cameras found");
           }
-        }
-
-        docReady(function () {
-          var resultContainer = document.getElementById("qr-reader-results");
-          var lastResult,
-            countResults = 0;
-          let lastScanDateTime = new Date();
-          function onScanSuccess(decodedText, decodedResult) {
-            if (
-              decodedText != lastResult ||
-              Math.abs(lastScanDateTime.getTime() - new Date().getTime()) /
-                1000 >
-                2
-            ) {
-              beep.play();
-              lastResult = decodedText;
-              lastScanDateTime = new Date();
-              //check if resident or visitor
-              let indicator = decodedText.substring(0, 3);
-              if (indicator == "RES") {
-                //resident
-                let url =
-                  localStorage.getItem("APIURL_GateScan") +
-                  "/API/InsertNewResidentGateLog.php";
-                let obj = JSON.parse(localStorage.getItem("UserObj"));
-                let data = {
-                  QRCode: decodedText,
-                  ScannedByUser: obj.UserID,
-                  LogType: sessionStorage.getItem("ScanType"),
-                };
-
-                $.post(
-                  url,
-                  data,
-                  function (res) {
-                    if (res.result) {
-                      alert("Gate pass successfully saved.");
-                    } else {
-                      alert("Transaction failed.");
-                    }
-                  },
-                  "json"
-                ).fail(function (xhr, status, message) {
-                  alert("Error has occured. " + message);
-                });
-              } else if (indicator == "VIS") {
-                //visitor
-                html5QrcodeScanner.clear();
-                $("#divVisitorForm").slideDown();
-                let url =
-                  localStorage.getItem("APIURL_GateScan") +
-                  "/API/GetVisitorDetailsByQR.php";
-                let data = {
-                  QRCode: decodedText,
-                  LogType: sessionStorage.getItem("ScanType"),
-                };
-
-                $.post(
-                  url,
-                  data,
-                  function (res) {
-                    console.log(res);
-                    let $frm = $("#frmVisitorForm");
-                    $frm
-                      .find("input[name=txtVisitorName]")
-                      .val(res.VisitorCompleteName);
-                    $frm.find("input[name=txtVisitorID]").val(res.DataCenterID);
-                    $frm.find("input[name=txtVisitorQRCode]").val(decodedText);
-                  },
-                  "json"
-                ).fail(function (xhr, status, message) {
-                  alert("Error has occured. " + message);
-                });
-              } else if (indicator == "VEH") {
-                let url =
-                  localStorage.getItem("APIURL_GateScan") +
-                  "/API/InsertNewVehicleGateLog.php";
-                let obj = JSON.parse(localStorage.getItem("UserObj"));
-                let data = {
-                  QRCode: decodedText,
-                  ScannedByUser: obj.UserID,
-                  LogType: sessionStorage.getItem("ScanType"),
-                };
-                $.post(
-                  url,
-                  data,
-                  function (res) {
-                    if (res.result) {
-                      alert("Gate pass successfully saved.");
-                    } else {
-                      alert("Transaction failed." + res.message);
-                    }
-                  },
-                  "json"
-                ).fail(function (xhr, status, message) {
-                  alert("Error has occured. " + message);
-                });
-              } else {
-                alert("Invalid QR Codee");
-              }
-            }
-          }
-
-          var html5QrcodeScanner = new Html5QrcodeScanner("qr-reader", {
-            fps: 10,
-            qrbox: 250,
-          });
-          html5QrcodeScanner.render(onScanSuccess);
-          $("#qr-reader__scan_region video").width("100%");
+        })
+        .catch(function (e) {
+          console.error(e);
         });
+
+      scanner.addListener("scan", function (c) {
+        document.getElementById("text").value = c;
+        document.forms[0].submit();
       });
     </script>
-  </head>
+  </body>
 </html>
