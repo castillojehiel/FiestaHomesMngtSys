@@ -24,6 +24,7 @@ let Resident = (resident) => {
   this.Userpass = resident.Userpass;
   this.ResidentName = resident.ResidentName;
   this.isHouseHoldContactPerson = resident.isHouseHoldContactPerson;
+  this.RelationshipToHomeowner = resident.RelationshipToHomeowner;
 };
 
 Resident.residentLogin = (ResidentDetails, result) => {
@@ -121,7 +122,7 @@ Resident.UpdatePassword = (Resident, result) => {
 Resident.RegisterNewHouseholdMember = (Resident, result) => {
   console.log(Resident);
   dbConn.query(
-    `INSERT INTO datacenter (FirstName, MiddleName, LastName, Suffix, Gender, Birthdate, ContactNo, EmailAddress, isActive, isResident, CreatedBy, CreatedDateTime, HouseHoldID, Userpass)
+    `INSERT INTO datacenter (FirstName, MiddleName, LastName, Suffix, Gender, Birthdate, ContactNo, EmailAddress, isActive, isResident, CreatedBy, CreatedDateTime, HouseHoldID, Userpass, RelationshipToHomeowner)
             VALUES(
                     '${Resident.FirstName}',
                     '${Resident.MiddleName}',
@@ -136,7 +137,8 @@ Resident.RegisterNewHouseholdMember = (Resident, result) => {
                     '${Resident.CreatedBy}',
                     CURRENT_TIMESTAMP(),
                     '${Resident.HouseHoldID}',
-                    '${Resident.FirstName}'
+                    '${Resident.FirstName}',
+                    '${Resident.RelationshipToHomeowner}'
             )`,
     (err, res) => {
       if (err) {
@@ -180,6 +182,30 @@ Resident.GetHouseHoldMembers = (DataCenterID, result) => {
                 ON hh.HouseHoldID = mem.HouseHoldID
             WHERE dc.isActive = 1
                 AND dc.DataCenterID = '${DataCenterID}'`,
+    (err, res) => {
+      if (err) {
+        console.log("Error...", err);
+        result(null, err);
+      } else {
+        console.log("Success", res);
+        result(null, res);
+      }
+    }
+  );
+};
+
+Resident.GetAllResident = (result) => {
+  console.log(Resident);
+  dbConn.query(
+    `SELECT
+        dc.DataCenterID,
+        CONCAT(dc.FirstName, ' ', dc.MiddleName, ' ', dc.LastName, ' ', dc.Suffix) as CompleteName,
+        CONCAT(hh.Street, ' ', hh.BlockNo, ' ', hh.HouseNo) as Address
+      FROM datacenter dc
+      LEFT JOIN households hh
+        ON dc.HouseHoldID = hh.HouseHoldID
+      WHERE dc.isActive = 1 AND dc.isResident = 1
+      ORDER BY CONCAT(dc.FirstName, ' ', dc.MiddleName, ' ', dc.LastName, ' ', dc.Suffix) ASC`,
     (err, res) => {
       if (err) {
         console.log("Error...", err);

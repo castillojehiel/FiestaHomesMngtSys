@@ -343,7 +343,17 @@
 				importStyle : true,
 				canvas : true,
 				loadCSS : document.URL.substr(0,document.URL.lastIndexOf('/')) + "/css/bootstrap.min.css",
-				header : `<h3>Complaint Report</h3>`
+				header : `	<table style="border:none">
+								<tr>
+									<td style="width : 80px"><img src="./Resources/Images/FiestaHomesLogo.png" style="width : 70px; height 70px"></td>
+									<td>
+										<h4 style="margin : 0 !important">Fiesta Homes</h4>
+										HWW9+HCH, Bacolod, Negros Occidental
+									</td>
+								</tr>
+							</table>
+							<br>
+							<h3>Complaint Report</h3>`
 			});
 		});
 

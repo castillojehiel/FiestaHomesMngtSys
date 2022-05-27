@@ -2,23 +2,23 @@ const mysql = require("mysql");
 
 // create here mysql connection
 
-const dbConn = mysql.createPool({
-  connectionLimit: 100, //important
-  host: "MYSQL5025.site4now.net",
-  user: "a84bb3_fsdb",
-  password: "F19r19d5z",
-  database: "db_a84bb3_fsdb",
-  debug: false,
-});
-
 // const dbConn = mysql.createPool({
 //   connectionLimit: 100, //important
-//   host: "localhost",
-//   user: "root",
-//   password: "",
-//   database: "fiestahomesdb_live",
+//   host: "MYSQL5025.site4now.net",
+//   user: "a84bb3_fsdb",
+//   password: "F19r19d5z",
+//   database: "db_a84bb3_fsdb",
 //   debug: false,
 // });
+
+const dbConn = mysql.createPool({
+  connectionLimit: 100, //important
+  host: "localhost",
+  user: "root",
+  password: "",
+  database: "fiestahomesdb_live",
+  debug: false,
+});
 
 // const dbConn = mysql.createPool({
 //   host: "MYSQL5030.site4now.net",
@@ -41,10 +41,11 @@ const dbConn = mysql.createPool({
 //   },
 // });
 
-// dbConn.connect(function (error) {
-//   if (error) throw error;
-//   console.log("Database Connected Successfully!!!");
-// });
+dbConn.getConnection((err, connection) => {
+  if (err) throw err;
+  console.log("Database connected successfully");
+  connection.release();
+});
 
 module.exports = dbConn;
 

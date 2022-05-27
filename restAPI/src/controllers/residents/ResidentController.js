@@ -1,6 +1,7 @@
 const residentModel = require("../../models/residents/ResidentModel");
 
 exports.ResidentLogin = (req, res) => {
+  console.log("Resident Login");
   residentModel.residentLogin(req.params, (err, resident) => {
     if (err) {
       res.send(err);
@@ -77,4 +78,15 @@ exports.GetHouseHoldVehicles = (req, res) => {
       }
     }
   );
+};
+
+exports.GetAllResidents = (req, res) => {
+  residentModel.GetAllResident((err, resident) => {
+    if (err) {
+      res.send(err);
+    } else {
+      console.log(resident);
+      res.send(resident);
+    }
+  });
 };

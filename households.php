@@ -739,6 +739,9 @@
 					$frm.find('input[name=txtID]').val(id);
 					$frm.find('input[name=chkIsActive]').prop('checked', res.isActive);
 					$("#tblResidentSearch tbody").html('');
+
+					HouseHoldResidents = [];
+					$("#mdlEditHouseHold tbody").html('');
 					GetHouseHoldMembers(id, "mdlEditHouseHold");
 					$("#mdlEditHouseHold").modal('show');
 				}
@@ -781,8 +784,11 @@
 				let $tbl = $("#"+modalid+" #tblHouseHoldResidents tbody");
 				$tbl.html('');
 				console.log(res);
+				HouseHoldResidents = res.map((item) => {
+					return {DataCenterID : item.DataCenterID, isContactPerson : item.isContactPerson, Relationship : item.RelationshipToHomeowner}
+				})
 				$.each( res, function(indx, value){
-					console.log(value.ResidentName + " " + value.isContactPerson + " " + parseInt(value.isContactPerson));
+					
 					if(modalid == "mdlEditHouseHold"){
 						$tbl.append(`
 							<tr id="`+ value.DataCenterID +`">
@@ -857,6 +863,8 @@
 		}
 
 		$("#btnNew").click( function(){
+			HouseHoldResidents = [];
+			$("#mdlNewHouseHold tbody").html('')
 			$("#mdlNewHouseHold").modal("show");
 		});
 
@@ -920,6 +928,7 @@
 			//check if already added to list
 			let isExists = HouseHoldResidents.filter(x=> x.DataCenterID == ID).length;
 			if(!Boolean(isExists)){
+				obj.Relationship = '';
 				HouseHoldResidents.push(obj);
 				console.log(HouseHoldResidents);
 				//add to UI
@@ -1015,6 +1024,7 @@
 			//check if already added to list
 			let isExists = HouseHoldResidents.filter(x=> x.DataCenterID == ID).length;
 			if(!Boolean(isExists)){
+				obj.Relationship = '';
 				HouseHoldResidents.push(obj);
 				console.log(HouseHoldResidents);
 				//add to UI
